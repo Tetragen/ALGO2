@@ -164,20 +164,25 @@ def show_residual_network(dot, residual_capacities, capacities, nodes_1,
     # copy of the graph to edit the plot
     dot_temp = dot.copy()
 
-    # we dont want node 1 to be the sink
     nodes = nodes_1+nodes_2
-    for node_1 in range(len(nodes)+1):
-        # we dont want node 2 to be the source
-        for node_2 in range(1, len(nodes)+2):
+    for node_1 in range(len(nodes)+2):
+        for node_2 in range(len(nodes)+2):
             if not node_1 == node_2:
                 residual_capacity = residual_capacities[node_1, node_2]
                 if residual_capacity > 0:
                     print("---")
                     print(node_1)
                     print(node_2)
+
                     if node_1 == 0:
                         label_1 = "Source"
                         label_2 = "1- {}".format(node_2-1)
+                    elif node_1 == len(nodes)+1:
+                        label_1 = "Sink"
+                        label_2 = "2- {}".format(node_2-1)
+                    elif node_2 == 0:
+                        label_1 = "1- {}".format(node_1-1)
+                        label_2 = "Source"
                     elif node_2 == len(nodes)+1:
                         label_1 = "2- {}".format(node_1-1)
                         label_2 = "Sink"
