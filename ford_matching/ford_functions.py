@@ -212,6 +212,9 @@ def show_residual_network_simple(dot, residual_capacities, capacities, nodes_1,
                                  nodes_2,
                                  dir_name, step):
 
+    """
+        plot a simplified residual graph for better visualization
+    """
     # copy of the graph to edit the plot
     dot_temp = dot.copy()
 
@@ -249,6 +252,7 @@ def show_residual_network_simple(dot, residual_capacities, capacities, nodes_1,
                                   color="#bf42f4",
                                   label=str(int(residual_capacity)),
                                   penwidth="1")
+                # remove useless edges
                 elif residual_capacity == 0 and initial_capacity > 0:
                     print(label_1)
                     print(label_2)

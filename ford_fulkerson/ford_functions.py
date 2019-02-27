@@ -194,6 +194,9 @@ def show_residual_network(dot, residual_capacities, capacities, nodes,
 def show_residual_network_simple(dot, residual_capacities, capacities, nodes,
                                  dir_name, step):
 
+    """
+        plot a simplified residual graph for a better visualization
+    """
     # copy of the graph to edit the plot
     dot_temp = dot.copy()
 
