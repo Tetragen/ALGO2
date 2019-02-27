@@ -10,9 +10,9 @@ from graphviz import Graph
 
 
 # number of nodes
-nb_nodes = 20
+nb_nodes = 10
 # number of edges in the inner graph
-nb_edges = 20
+nb_edges = 10
 # maximum initial capacity of an edge
 capacity_max = 2
 

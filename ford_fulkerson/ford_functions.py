@@ -143,8 +143,8 @@ def show_flow(flow, dot, dir_name, step, flow_value, nodes):
                                   penwidth='1')
 
     graph_name = dir_name+"/step_{}_flow".format(step)
-    dot_temp.attr(label=r"\nFlow\nAlgorithm step: {}\nflow value: {}".format(step,
-                                                                             int(flow_value)),
+    dot_temp.attr(label=r"\nFlow in orange\nAlgorithm step: {}\nflow value: {}".format(step,
+                                                                                       int(flow_value)),
                   fontsize='20')
     dot_temp.render(graph_name)
 
@@ -155,30 +155,36 @@ def show_residual_network(dot, residual_capacities, capacities, nodes,
     # copy of the graph to edit the plot
     dot_temp = dot.copy()
 
-    # we dont want node 1 to be the sink
-    for node_1 in range(len(nodes)+1):
-        # we dont want node 2 to be the source
-        for node_2 in range(1, len(nodes)+2):
+    for node_1 in range(len(nodes)+2):
+        for node_2 in range(len(nodes)+2):
             if not node_1 == node_2:
                 residual_capacity = residual_capacities[node_1, node_2]
+
+                if node_1 == 0:
+                    label_1 = "Source"
+                elif node_1 == len(nodes)+1:
+                    label_1 = "Sink"
+                else:
+                    label_1 = str(node_1-1)
+
+                if node_2 == 0:
+                    label_2 = "Source"
+                elif node_2 == len(nodes)+1:
+                    label_2 = "Sink"
+                else:
+                    label_2 = str(node_2-1)
+
+                # plot a purple edge to mark the residual graph
                 if residual_capacity > 0:
-                    if node_1 == 0:
-                        label_1 = "Source"
-                    else:
-                        label_1 = str(node_1-1)
-                    if node_2 == len(nodes)+1:
-                        label_2 = "Sink"
-                    else:
-                        label_2 = str(node_2-1)
                     dot_temp.edge(label_1,
                                   label_2,
                                   color="#bf42f4",
                                   label=str(int(residual_capacity)),
-                                  penwidth='1')
+                                  penwidth="1")
 
     # I put extra underscores to make vizualization easier
     graph_name = dir_name+"/step_{}___residual_graph".format(step)
-    dot_temp.attr(label=r"\nResidual graph\nAlgorithm step: {}".format(step),
+    dot_temp.attr(label=r"\nResidual graph in purple\nAlgorithm step: {}".format(step),
                   fontsize='20')
     dot_temp.render(graph_name)
 
@@ -350,8 +356,8 @@ def highlight_path(dot, augmenting_path, dir_name, step, nodes, path_capacity):
 
     # visualize the graph
     graph_name = dir_name+"/step_{}__path".format(step)
-    dot_temp.attr(label=r"\naugmenting path: {}\nAlgorithm step: {}\npath capacity: {}".format(augmenting_path,
-                                                                                               step,
-                                                                                               path_capacity),
+    dot_temp.attr(label=r"\naugmenting path in blue: {}\nAlgorithm step: {}\npath capacity: {}".format(augmenting_path,
+                                                                                                       step,
+                                                                                                       path_capacity),
                   fontsize='20')
     dot_temp.render(graph_name)
