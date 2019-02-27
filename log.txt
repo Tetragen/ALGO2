@@ -4,3 +4,4 @@
 
 edit ford_fulkerson/ford_functions : 
 - show residual graph
+- add show residual graph simple

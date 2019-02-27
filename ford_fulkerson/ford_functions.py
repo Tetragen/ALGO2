@@ -77,6 +77,8 @@ def apply_ford_fulkerson(
         # it might have more edges since we changed the capacities
         show_residual_network(dot, residual_capacities,
                               capacities, nodes, dir_name, step)
+        show_residual_network_simple(dot, residual_capacities,
+                                     capacities, nodes, dir_name, step)
 
         # first look for possible augmenting paths
         augmenting_paths = find_augmenting_path(residual_capacities)
@@ -183,8 +185,56 @@ def show_residual_network(dot, residual_capacities, capacities, nodes,
                                   penwidth="1")
 
     # I put extra underscores to make vizualization easier
-    graph_name = dir_name+"/step_{}___residual_graph".format(step)
+    graph_name = dir_name+"/step_{}____residual_graph".format(step)
     dot_temp.attr(label=r"\nResidual graph in purple\nAlgorithm step: {}".format(step),
+                  fontsize='20')
+    dot_temp.render(graph_name)
+
+
+def show_residual_network_simple(dot, residual_capacities, capacities, nodes,
+                                 dir_name, step):
+
+    # copy of the graph to edit the plot
+    dot_temp = dot.copy()
+
+    for node_1 in range(len(nodes)+2):
+        for node_2 in range(len(nodes)+2):
+            if not node_1 == node_2:
+                residual_capacity = residual_capacities[node_1, node_2]
+
+                if node_1 == 0:
+                    label_1 = "Source"
+                elif node_1 == len(nodes)+1:
+                    label_1 = "Sink"
+                else:
+                    label_1 = str(node_1-1)
+
+                if node_2 == 0:
+                    label_2 = "Source"
+                elif node_2 == len(nodes)+1:
+                    label_2 = "Sink"
+                else:
+                    label_2 = str(node_2-1)
+
+                # plot a purple edge to mark the residual graph
+                plot_edge = (label_1 is not "Sink") and (label_2 is not
+                "Source")
+                if residual_capacity > 0 and plot_edge:
+                    dot_temp.edge(label_1,
+                                  label_2,
+                                  color="#bf42f4",
+                                  label=str(int(residual_capacity)),
+                                  penwidth="1")
+                else:
+                    dot_temp.edge(label_1,
+                                  label_2,
+                                  penwidth="0",
+                                  arrowhead="none"
+                                  )
+
+    # I put extra underscores to make vizualization easier
+    graph_name = dir_name+"/step_{}___residual_graph_simple".format(step)
+    dot_temp.attr(label=r"\nSimple residual graph in purple\nAlgorithm step: {}".format(step),
                   fontsize='20')
     dot_temp.render(graph_name)
 
