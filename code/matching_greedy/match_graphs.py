@@ -33,7 +33,7 @@ dir_name = "images/" + graph_name+"_processed"
 
 if not os.path.exists(dir_name):
     os.makedirs(dir_name)
-dot.render(dir_name + "/graph_initial")
+dot.render("images/"+graph_name)
 
 # apply greedy algorithm
 matching_functions.match_graph(edges_list, nodes, dir_name)

@@ -14,8 +14,8 @@ def show_matching(nodes,
     function to highlight the matching edges
     and save the graph image
     """
-    dot = Graph(engine="circo")
-    # dot = Graph()
+    engine = "dot"
+    dot = Graph(engine=engine)
     for edge in edges_list:
         if edge not in matching:
             dot.edge(str(edge[0]), str(edge[1]),
@@ -26,7 +26,7 @@ def show_matching(nodes,
                      penwidth='4')
 
     # visualize the graph
-    graph_name = dir_name+"_circo/circo_greedy_"+str(index)
+    graph_name = dir_name+"/"+engine+"_greedy_"+str(index)
     # graph_name = dir_name+"/greedy_"+str(index)
     dot.attr(label=r"\nMatching size: {}\nAlgo step: {}\nNb nodes: {}".format(matching_length, index, len(nodes)),
              fontsize='30')
