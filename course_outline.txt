@@ -1,0 +1,24 @@
+---
+day 1
+---
+reminders on graphs
+the maximum matching problem
+brute force approach
+greedy algorithm
+flow networks
+the maximum flow problem
+the ford fulkerson algorithm
+connection to the matching problem
+
+
+---
+day 2
+---
+building graphs for data
+distances
+probability distributions and random variables
+maximum likelihood
+optimization and gradient descent
+correlation
+kmeans clustering
+similarities and spectral clustering

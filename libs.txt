@@ -1,0 +1,12 @@
+---
+day 1
+---
+graphviz
+
+---
+day 2
+---
+numpy
+matplotlib
+pandas
+sklearn
