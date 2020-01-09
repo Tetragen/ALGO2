@@ -1,10 +1,19 @@
 import ipdb
 import numpy as np
 import os
+import networkx as nx
+import matplotlib.pyplot as plt
 
 
 def apply_ford_fulkerson(
-    nodes_1, nodes_2, inner_capacities, source_capacities, sink_capacities, dot, dir_name
+    nodes_1,
+    nodes_2,
+    inner_capacities,
+    source_capacities,
+    sink_capacities,
+    G,
+    pos,
+    dir_name
 ):
     """
         Apply Ford Fulkerson algorithm.
@@ -76,10 +85,13 @@ def apply_ford_fulkerson(
 
         # show the residual network
         # it might have more edges since we changed the capacities
-        show_residual_network(dot, residual_capacities,
-                              capacities, nodes_1, nodes_2, dir_name, step)
-        show_residual_network_simple(dot, residual_capacities,
-                                     capacities, nodes_1, nodes_2, dir_name, step)
+        G_residual = build_residual_graph(G,
+                                          nodes_1,
+                                          nodes_2,
+                                          residual_capacities,
+                                          capacities)
+        show_residual_network_nx(G_residual, pos, residual_capacities,
+                                 capacities, nodes_1, nodes_2, dir_name, step)
 
         # first look for possible augmenting paths
         augmenting_paths = find_augmenting_path(residual_capacities)
@@ -90,7 +102,8 @@ def apply_ford_fulkerson(
                                 residual_capacities,
                                 augmenting_paths,
                                 dir_name,
-                                dot,
+                                G_residual,
+                                pos,
                                 step,
                                 nodes,
                                 nodes_1,
@@ -105,10 +118,10 @@ def apply_ford_fulkerson(
             # compute the value of the flow
             # it corresponds to what goes out of the source
             flow_value = sum(flow[0, :])
-            print("flow value {}\n\n\n".format(flow_value))
+            print(f"flow value {flow_value}\n\n\n")
 
             # print the flow
-            show_flow(flow, dot, dir_name, step, flow_value, nodes_1, nodes_2)
+            show_flow(flow, dir_name, step, flow_value, nodes_1, nodes_2)
 
             # update algo step
             step += 1
@@ -121,10 +134,9 @@ def apply_ford_fulkerson(
             break
 
 
-def show_flow(flow, dot, dir_name, step, flow_value, nodes_1, nodes_2):
+def show_flow(flow, dir_name, step, flow_value, nodes_1, nodes_2):
 
     # copy of the graph to edit the plot
-    dot_temp = dot.copy()
 
     # we dont want node 1 to be the sink
     nodes = nodes_1+nodes_2
@@ -146,127 +158,66 @@ def show_flow(flow, dot, dir_name, step, flow_value, nodes_1, nodes_2):
                         elif node_2 < node_1:
                             label_1 = "2- {}".format(node_1-1)
                             label_2 = "1- {}".format(node_2-1)
-                    dot_temp.edge(label_1,
-                                  label_2,
-                                  color="#c48c38",
-                                  label=str(int(edge_flow)),
-                                  penwidth='1')
-
-    graph_name = dir_name+"/step_{}_flow".format(step)
-    dot_temp.attr(label=r"\nFlow\nAlgorithm step: {}\nflow value: {}".format(step,
-                                                                             int(flow_value)),
-                  fontsize='20')
-    dot_temp.render(graph_name)
 
 
-def show_residual_network(dot, residual_capacities, capacities, nodes_1,
-                          nodes_2,
-                          dir_name, step):
+def show_residual_network_nx(G_residual, pos, residual_capacities, capacities, nodes_1,
+                             nodes_2,
+                             dir_name, step):
 
-    # copy of the graph to edit the plot
-    dot_temp = dot.copy()
+    edges_width = list()
+    edges_colors = list()
 
-    nodes = nodes_1+nodes_2
-    for node_1 in range(len(nodes)+2):
-        for node_2 in range(len(nodes)+2):
-            if not node_1 == node_2:
-                residual_capacity = residual_capacities[node_1, node_2]
-                if residual_capacity > 0:
-                    print("---")
-                    print(node_1)
-                    print(node_2)
+    for edge in G_residual.edges:
+        reverse = False
+        if edge[0] == "Source":
+            node_group_1 = int(edge[1].split('-')[1])
+            residual_capacity = residual_capacities[0, node_group_1+1]
+        elif edge[0] == "Sink":
+            reverse = True
+            node_group_2 = int(edge[1].split('-')[1])
+            residual_capacity = residual_capacities[-1, node_group_2+1]
+        elif edge[1] == "Sink":
+            node_group_2 = int(edge[0].split('-')[1])
+            residual_capacity = residual_capacities[node_group_2+1, -1]
+        elif edge[1] == "Source":
+            reverse = True
+            node_group_1 = int(edge[0].split('-')[1])
+            residual_capacity = residual_capacities[node_group_1+1, 0]
+        elif edge[0].split('-')[0] == "2":
+            reverse = True
+            node_group_2 = int(edge[0].split('-')[1])
+            node_group_1 = int(edge[1].split('-')[1])
+            residual_capacity = residual_capacities[node_group_2 +
+                                                    1, node_group_1+1]
+        else:
+            node_group_1 = int(edge[0].split('-')[1])
+            node_group_2 = int(edge[1].split('-')[1])
+            residual_capacity = residual_capacities[node_group_1 +
+                                                    1, node_group_2+1]
+        if residual_capacity != 0:
+            if reverse:
+                edges_width.append(1)
+                edges_colors.append("#67d627")
+            else:
+                edges_width.append(1)
+                edges_colors.append("#f5b342")
+        else:
+            edges_width.append(0.01)
+            edges_colors.append("#1b50a1")
 
-                    if node_1 == 0:
-                        label_1 = "Source"
-                        label_2 = "1- {}".format(node_2-1)
-                    elif node_1 == len(nodes)+1:
-                        label_1 = "Sink"
-                        label_2 = "2- {}".format(node_2-1)
-                    elif node_2 == 0:
-                        label_1 = "1- {}".format(node_1-1)
-                        label_2 = "Source"
-                    elif node_2 == len(nodes)+1:
-                        label_1 = "2- {}".format(node_1-1)
-                        label_2 = "Sink"
-                    else:
-                        if node_1 < node_2:
-                            label_1 = "1- {}".format(node_1-1)
-                            label_2 = "2- {}".format(node_2-1)
-                        elif node_2 < node_1:
-                            label_1 = "2- {}".format(node_1-1)
-                            label_2 = "1- {}".format(node_2-1)
-                    dot_temp.edge(label_1,
-                                  label_2,
-                                  color="#bf42f4",
-                                  label=str(int(residual_capacity)),
-                                  penwidth='1')
-
-    # I put extra underscores to make vizualization easier
-    graph_name = dir_name+"/step_{}____residual_graph".format(step)
-    dot_temp.attr(label=r"\nResidual graph\nAlgorithm step: {}".format(step),
-                  fontsize='20')
-    dot_temp.render(graph_name)
-
-
-def show_residual_network_simple(dot, residual_capacities, capacities, nodes_1,
-                                 nodes_2,
-                                 dir_name, step):
-
-    """
-        plot a simplified residual graph for better visualization
-    """
-    # copy of the graph to edit the plot
-    dot_temp = dot.copy()
-
-    nodes = nodes_1+nodes_2
-    for node_1 in range(len(nodes)+2):
-        for node_2 in range(len(nodes)+2):
-            if not node_1 == node_2:
-                residual_capacity = residual_capacities[node_1, node_2]
-                initial_capacity = capacities[node_1, node_2]
-                if node_1 == 0:
-                    label_1 = "Source"
-                    label_2 = "1- {}".format(node_2-1)
-                elif node_1 == len(nodes)+1:
-                    label_1 = "Sink"
-                    label_2 = "2- {}".format(node_2-1)
-                elif node_2 == 0:
-                    label_1 = "1- {}".format(node_1-1)
-                    label_2 = "Source"
-                elif node_2 == len(nodes)+1:
-                    label_1 = "2- {}".format(node_1-1)
-                    label_2 = "Sink"
-                else:
-                    if node_1 < node_2:
-                        label_1 = "1- {}".format(node_1-1)
-                        label_2 = "2- {}".format(node_2-1)
-                    elif node_2 < node_1:
-                        label_1 = "2- {}".format(node_1-1)
-                        label_2 = "1- {}".format(node_2-1)
-
-                plot_edge = (label_1 is not "Sink") and (label_2 is not
-                                                         "Source")
-                if residual_capacity > 0 and plot_edge:
-                    dot_temp.edge(label_1,
-                                  label_2,
-                                  color="#bf42f4",
-                                  label=str(int(residual_capacity)),
-                                  penwidth="1")
-                # remove useless edges
-                elif residual_capacity == 0 and initial_capacity > 0:
-                    print(label_1)
-                    print(label_2)
-                    dot_temp.edge(label_1,
-                                  label_2,
-                                  penwidth="0",
-                                  arrowhead="none"
-                                  )
-
-    # I put extra underscores to make vizualization easier
-    graph_name = dir_name+"/step_{}___residual_graph_simple".format(step)
-    dot_temp.attr(label=r"\nSimple residual graph in purple\nAlgorithm step: {}".format(step),
-                  fontsize='20')
-    dot_temp.render(graph_name)
+    node_color = "#b6cef2"
+    plt.title(f"residual graph step {step}")
+    nx.draw(G_residual,
+            pos,
+            node_size=160,
+            node_color=node_color,
+            font_size=6,
+            edge_color=edges_colors,
+            width=edges_width,
+            with_labels=True)
+    # plt.tight_layout()
+    plt.savefig(dir_name+f"/step_{step}__residual.pdf")
+    plt.close()
 
 
 def check_flow(flow, nodes, capacities):
@@ -332,8 +283,9 @@ def check_flow(flow, nodes, capacities):
     print("---\n")
 
 
-def augment_flow(flow, residual_capacities, augmenting_paths, dir_name, dot,
-                 step, nodes, nodes_1, nodes_2):
+def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
+                 G_residual,
+                 pos, step, nodes, nodes_1, nodes_2):
     print("---\naugment flow")
 
     # -----------
@@ -341,7 +293,7 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name, dot,
     # from the ones we found.
     # or take the last one ? up to you
     augmenting_path = augmenting_paths.pop()
-    print("chosen augmenting path : {}".format(augmenting_path))
+    print(f"chosen augmenting path : {augmenting_path}")
 
     # compute the capacity of this path.
     # We take the capacities from the source to the sink
@@ -356,10 +308,10 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name, dot,
     # The capacit of a path is the minimum of the capacities
     # of each edge.
     path_capacity = min(augmenting_path_capacities)
-    print("augmenting path capacity : {}".format(path_capacity))
+    print(f"augmenting path capacity : {path_capacity}")
 
     # highlight this path in the graph
-    highlight_path(dot, augmenting_path, dir_name, step,
+    highlight_path(G_residual, pos, augmenting_path, dir_name, step,
                    nodes, nodes_1, nodes_2, path_capacity)
 
     # -----
@@ -385,7 +337,7 @@ def find_augmenting_path(residual_capacities):
     last_index = residual_capacities.shape[1]-1
     print("---\nLook for augmenting paths in the residual graph")
     print("source = 0")
-    print("sink = {}".format(last_index))
+    print(f"sink = {last_index}")
     print("---")
     augmenting_paths = []
     stack = [(0, [0])]
@@ -404,7 +356,7 @@ def find_augmenting_path(residual_capacities):
         for next_node in next_available_nodes:
             # print("next node {}".format(next_node))
             if next_node == last_index:
-                print("found augmenting path : {}".format(path + [next_node]))
+                print(f"found augmenting path : {path+[next_node]}")
                 # avoid loops !
                 if next_node not in path:
                     augmenting_paths.append(path+[next_node])
@@ -415,35 +367,106 @@ def find_augmenting_path(residual_capacities):
     return augmenting_paths
 
 
-def highlight_path(dot, augmenting_path, dir_name, step, nodes, nodes_1, nodes_2, path_capacity):
-    dot_temp = dot.copy()
-    print("highlight path {}".format(augmenting_path))
-    for node_index in range(len(augmenting_path)-1):
-        node_1 = augmenting_path[node_index]
-        node_2 = augmenting_path[node_index+1]
-        # careful of the node names
-        if node_1 == 0:
-            label_1 = "Source"
-            label_2 = "1- {}".format(node_2-1)
-        elif node_2 == len(nodes)+1:
-            label_1 = "2- {}".format(node_1-1)
-            label_2 = "Sink"
-        else:
-            if node_1 < node_2:
-                label_1 = "1- {}".format(node_1-1)
-                label_2 = "2- {}".format(node_2-1)
-            elif node_2 < node_1:
-                label_1 = "2- {}".format(node_1-1)
-                label_2 = "1- {}".format(node_2-1)
-        dot_temp.edge(label_1,
-                      label_2,
-                      color="#4286f4",
-                      penwidth='2')
+def highlight_path(G_residual,
+                   pos,
+                   augmenting_path,
+                   dir_name,
+                   step,
+                   nodes,
+                   nodes_1,
+                   nodes_2,
+                   path_capacity):
+    print(f"highlight path {augmenting_path}")
 
-    # visualize the graph
-    graph_name = dir_name+"/step_{}__path".format(step)
-    dot_temp.attr(label=r"\naugmenting path: {}\nAlgorithm step: {}\npath capacity: {}".format(augmenting_path,
-                                                                                               step,
-                                                                                               path_capacity),
-                  fontsize='20')
-    dot_temp.render(graph_name)
+    # reformat augmenting path
+    augmenting_path_edges = list()
+    for index in range(len(augmenting_path)-1):
+        augmenting_path_edges.append(
+            [augmenting_path[index], augmenting_path[index+1]])
+
+    edges_width = list()
+    edges_colors = list()
+    for edge in G_residual.edges:
+        if edge[0] == "Source":
+            node_group_1 = int(edge[1].split('-')[1])
+            parsed_edge = [0, node_group_1+1]
+        elif edge[0] == "Sink":
+            node_group_2 = int(edge[1].split('-')[1])
+            parsed_edge = [len(nodes)+1, node_group_2+1]
+        elif edge[1] == "Sink":
+            node_group_2 = int(edge[0].split('-')[1])
+            parsed_edge = [node_group_2+1, len(nodes)+1]
+        elif edge[1] == "Source":
+            node_group_1 = int(edge[0].split('-')[1])
+            parsed_edge = [node_group_1, 0]
+        elif edge[0].split('-')[0] == "2":
+            node_group_2 = int(edge[0].split('-')[1])
+            node_group_1 = int(edge[1].split('-')[1])
+            parsed_edge = [node_group_2+1, node_group_1+1]
+        else:
+            node_group_1 = int(edge[0].split('-')[1])
+            node_group_2 = int(edge[1].split('-')[1])
+            parsed_edge = [node_group_1+1, node_group_2+1]
+        if parsed_edge in augmenting_path_edges:
+            edges_width.append(1)
+            edges_colors.append("#d627c2")
+        else:
+            edges_width.append(0.01)
+            edges_colors.append("#1b50a1")
+
+    node_color = "#b6cef2"
+    plt.title(f"augmenting path step {step}")
+    nx.draw(G_residual,
+            pos,
+            node_size=160,
+            node_color=node_color,
+            font_size=6,
+            edge_color=edges_colors,
+            width=edges_width,
+            with_labels=True)
+    plt.savefig(dir_name+f"/step_{step}_augmenting.pdf")
+    plt.close()
+
+
+def build_residual_graph(G,
+                         nodes_1,
+                         nodes_2,
+                         residual_capacities,
+                         capacities):
+    G_residual = G.copy()
+    nodes = nodes_1+nodes_2
+    for node_1 in range(len(nodes)+2):
+        for node_2 in range(len(nodes)+2):
+            if not node_1 == node_2:
+                residual_capacity = residual_capacities[node_1, node_2]
+                initial_capacity = capacities[node_1, node_2]
+                if node_1 == 0:
+                    label_1 = "Source"
+                    label_2 = f"1-{node_2-1}"
+                elif node_1 == len(nodes)+1:
+                    label_1 = "Sink"
+                    label_2 = f"2-{node_2-1}"
+                elif node_2 == 0:
+                    label_1 = f"1-{node_1-1}"
+                    label_2 = "Source"
+                elif node_2 == len(nodes)+1:
+                    label_1 = f"2-{node_1-1}"
+                    label_2 = "Sink"
+                else:
+                    if node_1 < node_2:
+                        label_1 = f"1-{node_1-1}"
+                        label_2 = f"2-{node_2-1}"
+                    elif node_2 < node_1:
+                        label_1 = f"2-{node_1-1}"
+                        label_2 = f"1-{node_2-1}"
+
+                # process
+                edge=(label_1, label_2)
+                if residual_capacity == 0:
+                    if edge in G_residual.edges:
+                        G_residual.remove_edge(label_1, label_2)
+                if residual_capacity != 0:
+                    if initial_capacity == 0:
+                        G_residual.add_edge(label_1, label_2)
+
+    return G_residual

@@ -1,7 +1,9 @@
 '''
 Functions used for the greedy matching algorithm
 '''
-from graphviz import Graph
+# from graphviz import Graph
+import networkx as nx
+import matplotlib.pyplot as plt
 
 
 def show_matching(nodes,
@@ -14,23 +16,50 @@ def show_matching(nodes,
     function to highlight the matching edges
     and save the graph image
     """
-    engine = "dot"
-    dot = Graph(engine=engine)
+    G = nx.Graph()
+
+    # set colors
+    edge_colors = list()
+    unmatched_edge_color="#1b50a1"
+    matched_edge_color="#eb6b34"
+    node_color="#b6cef2"
+
+    # build the graph
     for edge in edges_list:
-        if edge not in matching:
-            dot.edge(str(edge[0]), str(edge[1]),
-                     color="darkolivegreen4", penwidth="1.1")
+        G.add_edge(edge[0], edge[1])
+
+    # we use sets because 
+    # G.edges can change the indexing in the edges
+    for edge in G.edges:
+        if set(edge) in matching:
+            edge_colors.append(matched_edge_color)
         else:
-            dot.edge(str(edge[0]), str(edge[1]),
-                     color='#4286f4',
-                     penwidth='4')
+            edge_colors.append(unmatched_edge_color)
 
     # visualize the graph
-    graph_name = dir_name+"/"+engine+"_greedy_"+str(index)
-    # graph_name = dir_name+"/greedy_"+str(index)
-    dot.attr(label=r"\nMatching size: {}\nAlgo step: {}\nNb nodes: {}".format(matching_length, index, len(nodes)),
-             fontsize='30')
-    dot.render(graph_name)
+    graph_name = dir_name+"greedy_"+str(index)+".pdf"
+    graph_title=f"\nMatching size: {matching_length}\nAlgo step: {index}\nNb nodes: {len(nodes)}"
+
+    plt.title(graph_title, fontsize=9)
+    # we give a seed to the layout engine
+    # in order to always have the same layout
+    # fot a given  graph.
+    # Otherwise, a random seed is used.
+    pos=nx.spring_layout(G, seed=1)
+    # if you want a circular layout
+    # pos=nx.circular_layout(G)
+    nx.draw(G,
+            pos=pos,
+            node_size=200,
+            node_color=node_color,
+            edge_color=edge_colors,
+            font_size=8,
+            width=1,
+            with_labels=True)
+    plt.tight_layout()
+    plt.axis('off')
+    plt.savefig(graph_name)
+    plt.close()
 
 
 def match_graph(edges_list, nodes, dir_name):
@@ -40,20 +69,20 @@ def match_graph(edges_list, nodes, dir_name):
     print('\n======')
     print('greedy algorithm')
     print('======')
-    matched_nodes = []
-    matching = []
+    matched_nodes = list()
+    matching = list()
     index = 1
     for edge in edges_list:
         print('\n----')
         print(edge)
         if edge[0] in matched_nodes:
-            print("node {} already matched".format(edge[0]))
+            print(f"node {edge[0]} already matched")
         elif edge[1] in matched_nodes:
-            print("node {} already matched".format(edge[1]))
+            print(f"node {edge[1]} already matched")
         else:
             # add the nodes to the list of matched nodes
             matched_nodes += edge
-            matching.append(edge)
+            matching.append(set(edge))
             print("add edge")
             print("matched_nodes")
             print(matched_nodes)
@@ -71,10 +100,9 @@ def match_graph(edges_list, nodes, dir_name):
         # increment algorithm index
         index += 1
 
-    print("\n====\nfinal matching length : {}".format(matching_length))
-    print("initial number of nodes : {}".format(len(nodes)))
-    print("number of unmatched nodes : {}".format(
-        len(nodes)-len(matched_nodes)))
+    print(f"\n====\nfinal matching length : {matching_length}")
+    print(f"initial number of nodes : {len(nodes)}")
+    print(f"number of unmatched nodes : {len(nodes)-len(matched_nodes)}")
     # quick text
     if len(matching)*2 == len(matched_nodes):
         print("number of matched nodes equals 2 times size of matching : ok")

@@ -16,5 +16,5 @@ for edge in edges:
              str(edge[1]),
              color='darkolivegreen4',
              penwidth='1.1')
-graph_name = 'images/bipartite'
+graph_name = 'images/bipartite_graph'
 dot.render(graph_name)

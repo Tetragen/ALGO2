@@ -1,9 +1,8 @@
 import pickle
 import os
 import random
-from graphviz import Graph
-
-dot = Graph(comment="Graph used to study the maximum matching problem")
+import networkx as nx
+import matplotlib.pyplot as plt
 
 """
 Generate graph data to perform the max matching greedy
@@ -18,7 +17,7 @@ if not os.path.exists("images/"):
     os.makedirs("images")
 
 
-def generate_problem_instance(n_nodes, max_successors):
+def generate_problem_instance(n_nodes: int, max_successors: int):
     """
         Function used to generate an instance of the matching set problem.
         We use undirected graphs, edges are not directed.
@@ -89,33 +88,53 @@ def generate_problem_instance(n_nodes, max_successors):
     print(edges_list)
     # print(len(edges_list))
 
-    dot = Graph(comment='Graph used to study the matching set problem')
+    G = nx.Graph()
     for edge in edges_list:
-        dot.edge(str(edge[0]),
-                 str(edge[1]),
-                 color='darkolivegreen4',
-                 penwidth='1.1')
+        G.add_edge(edge[0], edge[1])
 
     # save data
-    parameters = f"n={n_nodes}_maxs={max_successors}"
+    graph_name = f"n={n_nodes}_maxs={max_successors}"
 
     nodes = [x for x in range(1, n_nodes + 1)]
-    with open("data/" + parameters + "_nodes", "wb") as f:
+    with open("data/" + graph_name + "_nodes", "wb") as f:
         pickle.dump(nodes, f)
 
-    with open("data/"+parameters+"_neighbors", "wb") as f:
+    with open("data/"+graph_name+"_neighbors", "wb") as f:
         pickle.dump(successors, f)
 
-    with open(f"data/"+parameters+"_edges", "wb") as f:
+    with open(f"data/"+graph_name+"_edges", "wb") as f:
         pickle.dump(edges_list, f)
 
     # visualize the graph
-    graph_name = "images/"+parameters
-    dot.render(graph_name)
+    # choose colors
+    node_color="#b6cef2"
+    edge_color="#1b50a1"
+
+    # create directory for the graph
+    dir_name = "images/" + graph_name+"/"
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+    image_name = "images/"+graph_name+"/initial_graph.pdf"
+
+    plt.title("initial graph")
+    # we give a seed to the layout engine
+    # in order to always have the same layout
+    # fot a given  graph.
+    # Otherwise, a random seed is used.
+    pos=nx.spring_layout(G, seed=1)
+    # if you prefer a circular layout
+    # pos=nx.circular_layout(G)
+    nx.draw(G,
+            pos,
+            node_size=160,
+            node_color=node_color,
+            edge_color=edge_color,
+            font_size=6,
+            width=1,
+            with_labels=True)
+    plt.tight_layout()
+    plt.savefig(image_name)
+    plt.close()
 
 
-# generate_problem_instance(60, 6)
-# generate_problem_instance(50, 5)
-# generate_problem_instance(30, 4)
-# generate_problem_instance(20, 6)
-generate_problem_instance(100, 6)
+generate_problem_instance(20, 3)

@@ -1,7 +1,9 @@
 ---
 day 1
 ---
-graphviz
+networkx
+numpy
+matplotlib
 
 ---
 day 2
