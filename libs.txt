@@ -9,6 +9,7 @@ matplotlib
 day 2
 ---
 numpy
+scipy
 matplotlib
 pandas
 sklearn
