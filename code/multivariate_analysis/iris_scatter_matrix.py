@@ -9,8 +9,6 @@ df = sns.load_dataset("iris")
 # pairplot is the name of the seaborn function
 # to plot the scatter matrix
 sns.pairplot(df, hue="species")
-# ipdb.set_trace()
-
 
 title = 'Scatter matrix of the iris dataset'
 file = 'iris_scatter_matrix.pdf'

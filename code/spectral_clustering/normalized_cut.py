@@ -60,7 +60,7 @@ def cluster_and_compute_normalized_cut(nb_clusters, adjacency_matrix):
         cluster_normalized_cut = cluster_cut/cluster_degree
         normalized_cut += cluster_normalized_cut
 
-    print("normalized cut: {}".format(normalized_cut))
+    print(f"normalized cut: {normalized_cut}")
     return normalized_cut
 
 
@@ -69,7 +69,7 @@ max_nb_clusters = 10
 tried_nb_clusters = range(1, max_nb_clusters)
 
 for nb_clusters in tried_nb_clusters:
-    print("======\nnb clusters: {}".format(nb_clusters))
+    print(f"======\nnb clusters: {nb_clusters}")
     normalized_cuts.append(cluster_and_compute_normalized_cut(nb_clusters, adjacency_matrix))
 
 plt.plot(tried_nb_clusters, normalized_cuts, 'o')
