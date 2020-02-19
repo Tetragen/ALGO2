@@ -20,16 +20,33 @@ def show_matching(nodes,
 
     # set colors
     edge_colors = list()
-    unmatched_edge_color="#1b50a1"
-    matched_edge_color="#eb6b34"
-    node_color="#b6cef2"
+    unmatched_edge_color = "#1b50a1"
+    matched_edge_color = "#eb6b34"
+    node_color = "#b6cef2"
+    matched_nodes_colors = ["#34eb64",
+                            "#e8eb34",
+                            "#eb8f34",
+                            "#eb34d9",
+                            "#eb345f",
+                            "#3499eb",
+                            "#4710eb",
+                            "#e4ebe5",
+                            "#71ebe5",
+                            "#d6eb34",
+                            "#c9eb34",
+                            "#D8D56d",
+                            "#d5628c",
+                            "#37abc6",
+                            "#75a738",
+                            "#eb34d6"]
 
     # build the graph
     for edge in edges_list:
         G.add_edge(edge[0], edge[1])
 
-    # we use sets because 
+    # we use sets because
     # G.edges can change the indexing in the edges
+    # __import__('ipdb').set_trace()
     for edge in G.edges:
         if set(edge) in matching:
             edge_colors.append(matched_edge_color)
@@ -38,14 +55,14 @@ def show_matching(nodes,
 
     # visualize the graph
     graph_name = dir_name+"greedy_"+str(index)+".pdf"
-    graph_title=f"\nMatching size: {matching_length}\nAlgo step: {index}\nNb nodes: {len(nodes)}"
+    graph_title = f"\nMatching size: {matching_length}\nAlgo step: {index}\nNb nodes: {len(nodes)}"
 
     plt.title(graph_title, fontsize=9)
     # we give a seed to the layout engine
     # in order to always have the same layout
     # fot a given  graph.
     # Otherwise, a random seed is used.
-    pos=nx.spring_layout(G, seed=1)
+    pos = nx.spring_layout(G, seed=1)
     # if you want a circular layout
     # pos=nx.circular_layout(G)
     nx.draw(G,
@@ -56,6 +73,28 @@ def show_matching(nodes,
             font_size=8,
             width=1,
             with_labels=True)
+
+    colored = list()
+    matched_nodes_colors_copy = matched_nodes_colors.copy()
+    for node_1 in G.nodes:
+        for node_2 in G.nodes:
+            if set([node_1, node_2]) in matching:
+                if set([node_1, node_2]) not in colored:
+                    # if there are no more colors available,
+                    # update the list
+                    if len(matched_nodes_colors_copy) is 0:
+                        matched_nodes_colors_copy = matched_nodes_colors.copy()
+                    # choose a color from the list
+                    color = matched_nodes_colors_copy.pop()
+                    # update the list of colored nodes
+                    colored.append(set([node_1, node_2]))
+                    nx.draw_networkx_nodes(G,
+                                           pos,
+                                           nodelist=[node_1, node_2],
+                                           node_color=color,
+                                           # node_size=500,
+                                           alpha=0.8)
+
     plt.tight_layout()
     plt.axis('off')
     plt.savefig(graph_name)

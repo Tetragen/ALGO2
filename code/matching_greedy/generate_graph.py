@@ -96,13 +96,13 @@ def generate_problem_instance(n_nodes: int, max_successors: int):
     graph_name = f"n={n_nodes}_maxs={max_successors}"
 
     nodes = [x for x in range(1, n_nodes + 1)]
-    with open("data/" + graph_name + "_nodes", "wb") as f:
+    with open(f"data/{graph_name}_nodes", "wb") as f:
         pickle.dump(nodes, f)
 
-    with open("data/"+graph_name+"_neighbors", "wb") as f:
+    with open(f"data/{graph_name}_neighbors", "wb") as f:
         pickle.dump(successors, f)
 
-    with open(f"data/"+graph_name+"_edges", "wb") as f:
+    with open(f"data/{graph_name}_edges", "wb") as f:
         pickle.dump(edges_list, f)
 
     # visualize the graph
@@ -114,7 +114,7 @@ def generate_problem_instance(n_nodes: int, max_successors: int):
     dir_name = "images/" + graph_name+"/"
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
-    image_name = "images/"+graph_name+"/initial_graph.pdf"
+    image_name = f"images/{graph_name}/initial_graph.pdf"
 
     plt.title("initial graph")
     # we give a seed to the layout engine
@@ -137,4 +137,4 @@ def generate_problem_instance(n_nodes: int, max_successors: int):
     plt.close()
 
 
-generate_problem_instance(20, 3)
+generate_problem_instance(50, 4)
