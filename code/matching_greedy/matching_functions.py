@@ -103,7 +103,8 @@ def show_matching(nodes,
 
 def match_graph(edges_list, nodes, dir_name):
     """
-     apply greedy algorithm
+    Apply greedy algorithm on the generated graph.
+    EDIT THIS FUNCTION, it contains some mistakes.
     """
     print('\n======')
     print('greedy algorithm')
