@@ -137,4 +137,4 @@ def generate_problem_instance(n_nodes: int, max_successors: int):
     plt.close()
 
 
-generate_problem_instance(50, 4)
+generate_problem_instance(20, 3)

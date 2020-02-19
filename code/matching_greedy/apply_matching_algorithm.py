@@ -31,4 +31,4 @@ def match_graph(nb_nodes: int, max_nb_of_successors: int):
     # apply greedy algorithm
     matching_functions.match_graph(edges_list, nodes, dir_name)
 
-match_graph(40, 4)
+match_graph(20, 3)

@@ -92,7 +92,7 @@ def show_matching(nodes,
                                            pos,
                                            nodelist=[node_1, node_2],
                                            node_color=color,
-                                           # node_size=500,
+                                           node_size=200,
                                            alpha=0.8)
 
     plt.tight_layout()
