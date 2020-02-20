@@ -23,7 +23,7 @@ def connectpoints(x, y, p1, p2):
 
 threshold = 0.5
 
-for (i, j) in [(i, j) for i in range(1, x.shape[0]) for j in range(1, x.shape[0])]:
+for (i, j) in [(i, j) for i in range(0, x.shape[0]) for j in range(0, x.shape[0])]:
         # we look points a and b
     x_i = x[i]
     y_i = y[i]

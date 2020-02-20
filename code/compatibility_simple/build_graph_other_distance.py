@@ -27,7 +27,7 @@ distance_type = "infinie"
 distance_type = "manhattan"
 distance_type = "custom"
 
-for (i, j) in [(i, j) for i in range(1, x.shape[0]) for j in range(1, x.shape[0])]:
+for (i, j) in [(i, j) for i in range(0, x.shape[0]) for j in range(0, x.shape[0])]:
         # we look points a and b
     x_a = x[i]
     y_a = y[i]
