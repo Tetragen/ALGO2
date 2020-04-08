@@ -27,8 +27,7 @@ def generate_random_undirected_graph(n: int, p: int):
 
     # in an undirected graph, we dont need to consider the inverse of an edge
     all_edges = [{i, j} for i in range(1, n + 1) for j in range(i + 1, n + 1)]
-    # remove edges from one node to itself
-    all_edges = [edge for edge in all_edges if len(edge) == 2]
+
     # shuffle the order of the edges
     random.shuffle(all_edges)
 
@@ -73,4 +72,4 @@ def generate_random_undirected_graph(n: int, p: int):
             width=edge_widths)
     plt.savefig(graph_name)
 
-generate_random_undirected_graph(10, 40)
+generate_random_undirected_graph(20, 60)

@@ -25,8 +25,8 @@ def generate_random_directed_graph(n: int, p: int):
     if p > n * (n - 1):
         raise ValueError('The number of edges is too large !')
 
-    # in an directed graph, we dont need to consider the inverse of an edge
-    all_edges = [{i, j} for i in range(1, n + 1) for j in range(i + 1, n + 1)]
+    # in an directed graph, we need to consider the inverse of an edge
+    all_edges = [{i, j} for i in range(1, n + 1) for j in range(1, n + 1)]
     # remove edges from one node to itself
     all_edges = [edge for edge in all_edges if len(edge) == 2]
     # shuffle the order of the edges
@@ -69,4 +69,4 @@ def generate_random_directed_graph(n: int, p: int):
             width=edge_widths)
     plt.savefig(graph_name)
 
-generate_random_directed_graph(10, 30)
+generate_random_directed_graph(30, 50)
