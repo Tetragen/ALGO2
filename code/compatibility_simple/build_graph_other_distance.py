@@ -49,7 +49,8 @@ for (i, j) in [(i, j) for i in range(0, x.shape[0]) for j in range(0, x.shape[0]
         distance = 0.1*abs(x_a-x_b)+0.9*abs(y_a-y_b)
 
     if distance <= threshold:
-        connectpoints(x, y, i, j)
+        if i is not j:
+            connectpoints(x, y, i, j)
 
 
 # plt.axis('equal')

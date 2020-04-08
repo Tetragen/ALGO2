@@ -31,7 +31,8 @@ for (i, j) in [(i, j) for i in range(0, x.shape[0]) for j in range(0, x.shape[0]
     y_j = y[j]
     euclidian_distance = math.sqrt((x_i - x_j)**2 + (y_i - y_j)**2)
     if euclidian_distance <= threshold:
-        connectpoints(x, y, i, j)
+        if i is not j:
+            connectpoints(x, y, i, j)
 
 
 # plt.axis('equal')
