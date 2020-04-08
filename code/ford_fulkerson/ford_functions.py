@@ -321,7 +321,7 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
 def find_augmenting_path(residual_capacities):
     """
         Look for an augmenting path in the residual graph by
-        depth-first search (DFS)
+        breadth-first search (BFS)
     """
     # we want to go from the source to the sink
     # using edges in the residual graph
