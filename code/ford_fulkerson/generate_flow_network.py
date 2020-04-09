@@ -142,4 +142,4 @@ def generate_flow_network(nb_nodes, nb_edges, capacity_max):
         pickle.dump(pos, f)
 
 
-generate_flow_network(25, 25, 2)
+generate_flow_network(5, 5, 2)

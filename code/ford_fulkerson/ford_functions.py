@@ -35,8 +35,8 @@ def apply_ford_fulkerson(
 
         --------
         b) Look for augmenting paths in the residual graph.
-        - The function find_augmenting_path() looks for augmenting paths
-        by performing a DFS search in the graph.
+        - The function find_augmenting_paths() looks for augmenting paths
+        by performing a BFS search in the graph.
         We could do better.
         - The function highlight_path() plots the chosen
         augmenting path.
@@ -46,7 +46,6 @@ def apply_ford_fulkerson(
         - This is done in the function augment_flow()
         - The function check_flow() tests that the flow
         complies with the hypothesis of a flow network.
-        - The function show_flow() plots the flow.
 
         d) Otherwise, we did not find an augmenting path.
         This means that our flow is optimal.
@@ -70,7 +69,7 @@ def apply_ford_fulkerson(
     # Algorithm iterations
     step = 1
     while True:
-        print("===================\nAlgorithm step : {}".format(step))
+        print(f"===================\nAlgorithm step : {step}")
 
         # compute the residual capacities
         residual_capacities = capacities-flow
@@ -86,7 +85,7 @@ def apply_ford_fulkerson(
                                  capacities, nodes, dir_name, step)
 
         # first look for possible augmenting paths
-        augmenting_paths = find_augmenting_path(residual_capacities)
+        augmenting_paths = find_augmenting_paths(residual_capacities)
         if augmenting_paths:
             print("found augmenting paths in residual graph")
             # update the flow
@@ -108,52 +107,17 @@ def apply_ford_fulkerson(
             # compute the value of the flow
             # it corresponds to what goes out of the source
             flow_value = sum(flow[0, :])
-            print("flow value {}\n\n\n".format(flow_value))
-
-            # print the flow
-            # show_flow(flow, dot, dir_name, step, flow_value, nodes)
+            print(f"flow value {flow_value}\n\n\n")
 
             # update algo step
             step += 1
         else:
             print("\n=====================\n")
             print("found no augmenting path : flow is optimal")
-            print("stopping at step {}".format(step))
-            print("flow value: {}".format(flow_value))
+            print(f"stopping at step {step}")
+            print(f"flow value: {flow_value}")
             print("\n=====================\n")
             break
-
-
-def show_flow(flow, dir_name, step, flow_value, nodes):
-
-    # copy of the graph to edit the plot
-
-    # we dont want node 1 to be the sink
-    for node_1 in range(len(nodes)+1):
-        # we dont want node 2 to be the source
-        for node_2 in range(1, len(nodes)+2):
-            if not node_1 == node_2:
-                edge_flow = flow[node_1, node_2]
-                if edge_flow > 0:
-                    if node_1 == 0:
-                        label_1 = "Source"
-                    else:
-                        label_1 = str(node_1-1)
-                    if node_2 == len(nodes)+1:
-                        label_2 = "Sink"
-                    else:
-                        label_2 = str(node_2-1)
-                    dot_temp.edge(label_1,
-                                  label_2,
-                                  color="#c48c38",
-                                  label=str(int(edge_flow)),
-                                  penwidth='1')
-
-    graph_name = dir_name+"/step_{}_flow".format(step)
-    dot_temp.attr(label=r"\nFlow in orange\nAlgorithm step: {}\nflow value: {}".format(step,
-                                                                                       int(flow_value)),
-                  fontsize='20')
-    dot_temp.render(graph_name)
 
 
 def show_residual_network_nx(G_residual, pos, residual_capacities, capacities, nodes, dir_name, step):
@@ -240,7 +204,7 @@ def check_flow(flow, nodes, capacities):
     # is the same as what comes in,
     # for any node different from the sink
     # and the difference from the source.
-    flow_check_2 = []
+    flow_check_2 = list()
     for node in range(1, len(nodes) + 1):
         flow_check_2.append(sum(flow[:, node]) == sum(flow[node, :]))
     if all(flow_check_2):
@@ -284,12 +248,12 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
     # from the ones we found.
     # or take the last one ? up to you
     augmenting_path = augmenting_paths.pop()
-    print("chosen augmenting path : {}".format(augmenting_path))
+    print(f"chosen augmenting path : {augmenting_path}")
 
     # compute the capacity of this path.
     # We take the capacities from the source to the sink
     # without the sink.
-    augmenting_path_capacities = []
+    augmenting_path_capacities = list()
     for node_index in range(len(augmenting_path)-1):
         node_1 = augmenting_path[node_index]
         node_2 = augmenting_path[node_index+1]
@@ -299,7 +263,7 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
     # The capacit of a path is the minimum of the capacities
     # of each edge.
     path_capacity = min(augmenting_path_capacities)
-    print("augmenting path capacity : {}".format(path_capacity))
+    print(f"augmenting path capacity : {path_capacity}")
 
     # highlight this path in the graph
     highlight_path(G_residual, pos, augmenting_path,
@@ -315,10 +279,10 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
         node_2 = augmenting_path[node_index+1]
         added_flow[node_1, node_2] = added_flow_value
         added_flow[node_2, node_1] = -added_flow_value
-    return flow + added_flow
+    return flow+added_flow
 
 
-def find_augmenting_path(residual_capacities):
+def find_augmenting_paths(residual_capacities):
     """
         Look for an augmenting path in the residual graph by
         breadth-first search (BFS)
@@ -328,9 +292,9 @@ def find_augmenting_path(residual_capacities):
     last_index = residual_capacities.shape[1]-1
     print("---\nLook for augmenting paths in the residual graph")
     print("source = 0")
-    print("sink = {}".format(last_index))
+    print(f"sink = {last_index}")
     print("---")
-    augmenting_paths = []
+    augmenting_paths = list()
     stack = [(0, [0])]
     while stack:
         (vertex, path) = stack.pop()
@@ -342,12 +306,11 @@ def find_augmenting_path(residual_capacities):
         # node 2 is on rank 3
         # node len(nodes) -1 is on rank len(nodes)
         # sink is on rank len(nodes)+1
-        next_available_nodes = np.where(residual_capacities[vertex,
-                                                            :])[0]
+        next_available_nodes = np.where(residual_capacities[vertex, :] > 0)[0]
         for next_node in next_available_nodes:
-            # print("next node {}".format(next_node))
+            # print(f"next node {next_node}")
             if next_node == last_index:
-                # print("found augmenting path : {}".format(path + [next_node]))
+                # print("found augmenting path : {path+[next_node]}")
                 # avoid loops !
                 if next_node not in path:
                     augmenting_paths.append(path+[next_node])
@@ -359,7 +322,7 @@ def find_augmenting_path(residual_capacities):
 
 
 def highlight_path(G_residual, pos, augmenting_path, dir_name, step, nodes, path_capacity):
-    print("highlight path {}".format(augmenting_path))
+    print(f"highlight path {augmenting_path}")
 
     # reformat augmenting path
     augmenting_path_edges = list()
@@ -368,7 +331,6 @@ def highlight_path(G_residual, pos, augmenting_path, dir_name, step, nodes, path
             [augmenting_path[index], augmenting_path[index+1]])
 
     # print(augmenting_path_edges)
-    # __import__('ipdb').set_trace()
     edges_width = list()
     edges_colors = list()
     edge_labels = dict()
