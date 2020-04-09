@@ -55,7 +55,6 @@ plt.title(title)
 plt.xlabel('value')
 plt.ylabel('density')
 plt.savefig(f"distros/distro_1_normed_hist_{nbins}_bins.pdf")
-plt.close()
 
 # # Fit a normal distribution to the data:
 # mu, std = norm.fit(data)

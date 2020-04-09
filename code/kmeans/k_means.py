@@ -70,7 +70,7 @@ for iteration in range(0, N_iterations):
     plt.plot(x[cluster_1], y[cluster_1], 'o', color="firebrick")
     plt.plot(x[cluster_2], y[cluster_2], 'o', color="cornflowerblue")
     plt.plot(x_centroids, y_centroids, 'o', color="lime")
-    title = 'voronoi : iteration  ' + str(iteration) + ' (centroids in red)'
+    title = 'voronoi : iteration  ' + str(iteration) + ' (centroids in green)'
     plt.title(title)
     plt.xlabel('x')
     plt.ylabel('y')
@@ -95,7 +95,7 @@ for iteration in range(0, N_iterations):
     plt.plot(x[cluster_1], y[cluster_1], 'o', color="firebrick")
     plt.plot(x[cluster_2], y[cluster_2], 'o', color="cornflowerblue")
     plt.plot(x_centroids, y_centroids, 'o', color="lime")
-    title = "update centroids : iteration {} (centroids in red)".format(
+    title = "update centroids : iteration {} (centroids in green)".format(
         iteration)
     plt.title(title)
     plt.xlabel('x')
