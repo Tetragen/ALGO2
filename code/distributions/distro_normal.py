@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 nb_data = 1000
-mean = 1
+mean = 4
 # standard deviation
 std = 0.1
 
@@ -13,6 +13,7 @@ title = 'Normal distribution, mean=' + \
     str(mean) + ', standard deviation=' + str(std)
 plt.xlabel('datapoint index')
 plt.ylabel('datapoint value')
+plt.ylim([1, 8])
 plt.title(title, bbox=style)
 plt.savefig('classic_distros/normal_m_' +
             str(mean) + '_std_' + str(std) + '.pdf')
@@ -23,6 +24,7 @@ plt.hist(x, bins=nbins)
 title_hist = 'Histogram ' + title
 plt.xlabel('datapoint value')
 plt.ylabel('number of occurrences')
+plt.xlim([0,8])
 plt.title(title, bbox=style)
 plt.savefig('classic_distros/hist_normal_m_' +
             str(mean) + '_std_' + str(std) + '.pdf')
