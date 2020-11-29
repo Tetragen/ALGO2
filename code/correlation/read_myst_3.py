@@ -48,8 +48,9 @@ l = [(i, j) for i in range(0, 5) for j in range(0, 5)]
 
 correlation_matrix = np.zeros((5, 5))
 
+# Edit here
 for (i, j) in l:
-    correlation_matrix[i][j] = pearsonr(data[i], data[j])[0]
+    correlation_matrix[i][j] = 3
 
 im = plt.imshow(correlation_matrix, vmin=-1, vmax=1)
 plt.colorbar(im)

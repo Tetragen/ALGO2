@@ -13,20 +13,12 @@ adjacency_matrix = np.zeros((14, 14))
 adjacency_matrix[0, [1, 2]] = 1
 adjacency_matrix[1, [0, 3, 2, 5]] = 1
 adjacency_matrix[2, [0, 1, 5, 4]] = 1
-adjacency_matrix[3, [1, 4]] = 1
-adjacency_matrix[4, [2, 3]] = 1
-adjacency_matrix[5, [1, 2]] = 1
 
 # cluster 2
-adjacency_matrix[6, [7, 8]] = 1
-adjacency_matrix[7, [6, 8]] = 1
-adjacency_matrix[8, [7, 6]] = 1
+adjacency_matrix[6, [1, 9]] = 1
 
 # cluster 3
 adjacency_matrix[9, [12, 13]] = 1
-adjacency_matrix[10, [11, 12]] = 1
-adjacency_matrix[11, [10, 12, 13]] = 1
-adjacency_matrix[12, [9, 10, 11, 13]] = 1
 adjacency_matrix[13, [9, 11, 12]] = 1
 
 transp = np.transpose(adjacency_matrix)
@@ -38,7 +30,7 @@ dataset = [x for x in range(nb_datapoints)]
 
 # CHANGE HERE
 # choose a relevant number of clusters
-nb_clusters = 3
+nb_clusters = 2
 
 sc = SpectralClustering(nb_clusters, affinity='precomputed')
 

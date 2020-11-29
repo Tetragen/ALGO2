@@ -13,5 +13,4 @@ def make_scatter_plot(dataframe, column1, column2, column3):
     plt.title(title)
     plt.savefig('images/' + filename)
 
-make_scatter_plot(df, "PassengerId", "Fare", "Survived")
-make_scatter_plot(df, "Pclass", "Age", "Survived")
+make_scatter_plot(df, "PassengerId", "Parch", "Survived")

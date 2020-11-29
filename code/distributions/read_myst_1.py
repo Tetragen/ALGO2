@@ -37,7 +37,7 @@ plt.close()
 plot a histogram
 """
 # use a relevant number of bins !
-nbins = 50
+nbins = 5
 plt.hist(data, bins=nbins)
 title = f"mysterious distro 1 : histogram, {nbins} bins"
 plt.title(title)

@@ -46,7 +46,7 @@ for iteration in range(0, N_iterations):
         distances = [distance_0, distance_1, distance_2]
         # get the index of the closest centroid
         # EDIT HERE
-        centroid = distances.index(min(distances))
+        centroid = distances.index(max(distances))
         centroids_assignments[datapoint] = centroid
 
     cluster_0 = np.where(centroids_assignments == 0)
@@ -66,12 +66,12 @@ for iteration in range(0, N_iterations):
 
     # UPDATE CENTROIDS
     # EDIT HERE
-    x_centroids[0] = np.mean(x[cluster_0])
-    x_centroids[1] = np.mean(x[cluster_1])
-    x_centroids[2] = np.mean(x[cluster_2])
-    y_centroids[0] = np.mean(y[cluster_0])
-    y_centroids[1] = np.mean(y[cluster_1])
-    y_centroids[2] = np.mean(y[cluster_2])
+    x_centroids[0] = np.sum(x[cluster_0])
+    x_centroids[1] = np.sum(x[cluster_1])
+    x_centroids[2] = np.sum(x[cluster_2])
+    y_centroids[0] = np.sum(y[cluster_0])
+    y_centroids[1] = np.sum(y[cluster_1])
+    y_centroids[2] = np.sum(y[cluster_2])
     print("centroids positions")
     print(f"x0: {x_centroids[0]:.2f}  y0: {y_centroids[0]:.2f}")
     print(f"x1: {x_centroids[1]:.2f}  y1: {y_centroids[1]:.2f}")

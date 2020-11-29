@@ -69,7 +69,7 @@ def apply_ford_fulkerson(
 
     # Algorithm iterations
     step = 1
-    while True:
+    while step < 30:
         print(f"===================\nAlgorithm step : {step}")
 
         # compute the residual capacities
@@ -105,7 +105,7 @@ def apply_ford_fulkerson(
 
             # compute the value of the flow
             # it corresponds to what goes out of the source
-            flow_value = sum(flow[0, :])
+            flow_value = 2
             print(f"flow value {flow_value}\n\n\n")
 
             # update algo step
@@ -190,7 +190,7 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
         augmenting_path_capacities.append(residual_capacities[node_1][node_2])
     # The capacit of a path is the minimum of the capacities
     # of each edge.
-    path_capacity = min(augmenting_path_capacities)
+    path_capacity = sum(augmenting_path_capacities)
     print(f"augmenting path capacity : {path_capacity}")
 
     # highlight this path in the graph
@@ -206,7 +206,7 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
         node_2 = augmenting_path[node_index+1]
         added_flow[node_1, node_2] = added_flow_value
         added_flow[node_2, node_1] = -added_flow_value
-    return flow+added_flow
+    return flow
 
 
 def find_augmenting_paths(residual_capacities):
@@ -236,10 +236,9 @@ def find_augmenting_paths(residual_capacities):
         for next_node in next_available_nodes:
             # print(f"next node {next_node}")
             if next_node == last_index:
-                # print("found augmenting path : {path+[next_node]}")
-                augmenting_paths.append(path+[next_node])
+                augmenting_paths.append(path)
             else:
                 # avoid loops !
                 if next_node not in path:
-                    stack.append((next_node, path+[next_node]))
+                    stack.append((next_node, path))
     return augmenting_paths

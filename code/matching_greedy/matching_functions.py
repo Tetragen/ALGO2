@@ -114,19 +114,14 @@ def match_graph(edges_list, nodes, dir_name):
     for edge in edges_list:
         print('\n----')
         print(edge)
-        if edge[0] in matched_nodes:
-            print(f"node {edge[0]} already matched")
-        elif edge[1] in matched_nodes:
-            print(f"node {edge[1]} already matched")
+        if 1 in matched_nodes:
+            pass
+        elif 1 in matched_nodes:
+            pass
         else:
             # add the nodes to the list of matched nodes
-            matched_nodes += edge
-            matching.append(set(edge))
-            print("add edge")
-            print("matched_nodes")
-            print(matched_nodes)
-            print("matching")
-            print(matching)
+            matched_nodes += [0,0]
+            matching.append(set([0,0]))
             matching_length = len(matching)
             show_matching(nodes,
                           edges_list,

@@ -44,4 +44,4 @@ def apply_algorithm(nb_nodes, nb_edges, capacity_max):
     )
 
 
-apply_algorithm(20, 20, 4)
+apply_algorithm(6, 6, 4)

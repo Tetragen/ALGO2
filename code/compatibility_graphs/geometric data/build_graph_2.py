@@ -36,13 +36,13 @@ for (i, j) in [(i, j) for i in range(0, x.shape[0]) for j in range(0, x.shape[0]
     # EDIT THE DISTANCES HERE
     if distance_type == "manhattan":
         # ERRORS HERE
-        distance = abs(x_a-x_b)+abs(y_a-y_b)
+        distance = abs(x_a-x_b)-abs(y_a-y_b)
     elif distance_type == "infinie":
         # ERRORS HERE
-        distance = max(abs(x_a-x_b), abs(y_a-y_b))
+        distance = min(abs(x_a-x_b), abs(y_a+y_b))
     elif distance_type == "custom":
         # CHOOSE YOUR OWN DISTANCE
-        distance = 0.1*abs(x_a-x_b)+0.9*abs(y_a-y_b)
+        distance = 0.1*abs(x_a+x_b)-0.9*abs(y_a-y_b)
 
     if distance <= threshold:
         if i is not j:

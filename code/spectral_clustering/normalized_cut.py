@@ -60,9 +60,10 @@ normalized_cuts = list()
 max_nb_clusters = 10
 tried_nb_clusters = range(1, max_nb_clusters)
 
+# edit this loop
 for nb_clusters in tried_nb_clusters:
     print(f"======\nnb clusters: {nb_clusters}")
-    normalized_cuts.append(cluster_and_compute_normalized_cut(nb_clusters, adjacency_matrix))
+    normalized_cuts.append(1)
 
 plt.plot(tried_nb_clusters, normalized_cuts, 'o')
 plt.title("normalized cut heuristic")

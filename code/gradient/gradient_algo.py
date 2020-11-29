@@ -35,16 +35,15 @@ ax.plot_wireframe(X, Y, S, rstride=5, cstride=5, alpha=0.3)
 plt.xlabel('x')
 plt.ylabel('y')
 plt.savefig('function_to_minimize.pdf')
-# plt.close()
 
 # initialize the starting point
-scope = 25
+scope = 35
 x_star = np.random.uniform(-scope, scope)
 y_star = np.random.uniform(-scope, scope)
 
 # iterate the gradient algorithm
 N_iterations = 100
-alpha = 0.00005
+alpha = 0.001
 for iteration in range(N_iterations):
     x_gradient_vector = xgradient(x_star, y_star)
     y_gradient_vector = ygradient(x_star, y_star)
