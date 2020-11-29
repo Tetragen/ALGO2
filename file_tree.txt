@@ -1,0 +1,495 @@
+.
+├── Dockerfile
+├── README.md
+├── buildJupyterImage.sh
+├── code
+│   ├── compatiliby_graphs
+│   │   ├── geometric\ data
+│   │   │   ├── build_graph_1.py
+│   │   │   ├── build_graph_2.py
+│   │   │   ├── data.npy
+│   │   │   └── images
+│   │   │       ├── thres_0.05_dist_L2.pdf
+│   │   │       ├── thres_0.2_dist_L2.pdf
+│   │   │       ├── thres_0.2_dist_custom.pdf
+│   │   │       ├── thres_0.2_dist_infinie.pdf
+│   │   │       ├── thres_0.2_dist_manhattan.pdf
+│   │   │       ├── thres_0.5_dist_L2.pdf
+│   │   │       ├── thres_0.5_dist_infinie.pdf
+│   │   │       ├── thres_0.5_dist_manhattan.pdf
+│   │   │       ├── thres_0_dist_L2.pdf
+│   │   │       ├── thres_4_dist_L2.pdf
+│   │   │       └── thres_4_dist_infinie.pdf
+│   │   └── other_data
+│   │       ├── build_graph.ipynb
+│   │       ├── build_graph.py
+│   │       ├── create_dataset.py
+│   │       ├── csv_files
+│   │       │   └── complex_data.csv
+│   │       └── images
+│   │           ├── complex_data_threshold_1
+│   │           ├── complex_data_threshold_1.pdf
+│   │           ├── complex_data_threshold_10
+│   │           ├── complex_data_threshold_10.pdf
+│   │           ├── complex_data_threshold_15
+│   │           ├── complex_data_threshold_15.pdf
+│   │           ├── complex_data_threshold_3
+│   │           └── complex_data_threshold_3.pdf
+│   ├── correlation
+│   │   ├── __pycache__
+│   │   │   └── pandas.cpython-36.pyc
+│   │   ├── correlation_matrix.pdf
+│   │   ├── covariance.pdf
+│   │   ├── mysterious_distro_3.csv
+│   │   ├── pandas_infos.py
+│   │   ├── pandas_titanic.py
+│   │   ├── read_myst_3.py
+│   │   └── titanic.csv
+│   ├── distributions
+│   │   ├── classic_distributions
+│   │   │   ├── bernoulli_0.1.pdf
+│   │   │   ├── bernoulli_0.3.pdf
+│   │   │   ├── bernoulli_0.7.pdf
+│   │   │   ├── hist_bernoulli_0.3.pdf
+│   │   │   ├── hist_normal_m_1_std_0.1.pdf
+│   │   │   ├── hist_normal_m_1_std_0.5.pdf
+│   │   │   ├── hist_normal_m_1_std_1.png
+│   │   │   ├── hist_normal_m_4_std_0.1.pdf
+│   │   │   ├── hist_normal_m_4_std_1.pdf
+│   │   │   ├── hist_unif_continuous_3455.pdf
+│   │   │   ├── hist_unif_continuous_41_42.pdf
+│   │   │   ├── hist_uniform_discrete_10.pdf
+│   │   │   ├── hist_uniform_discrete_2.pdf
+│   │   │   ├── normal_m_1_std_0.1.pdf
+│   │   │   ├── normal_m_1_std_0.2.pdf
+│   │   │   ├── normal_m_1_std_0.4.pdf
+│   │   │   ├── normal_m_1_std_0.5.pdf
+│   │   │   ├── normal_m_1_std_1.pdf
+│   │   │   ├── normal_m_4_std_0.1.pdf
+│   │   │   ├── normal_m_4_std_1.pdf
+│   │   │   ├── unif_continuous_01.pdf
+│   │   │   ├── unif_continuous_3455.pdf
+│   │   │   ├── unif_continuous_41_42.pdf
+│   │   │   ├── uniform_discrete_10.pdf
+│   │   │   └── uniform_discrete_2.pdf
+│   │   ├── create_bimodal.py
+│   │   ├── create_normal.py
+│   │   ├── csv_files
+│   │   │   ├── foot.csv
+│   │   │   ├── mysterious_distro_1.csv
+│   │   │   └── mysterious_distro_2.csv
+│   │   ├── distro_bernoulli.py
+│   │   ├── distro_normal.py
+│   │   ├── distros
+│   │   │   ├── distro_1.pdf
+│   │   │   ├── distro_1_hist_3_bins.pdf
+│   │   │   ├── distro_1_hist_50_bins.pdf
+│   │   │   ├── distro_1_normed_hist_3_bins.pdf
+│   │   │   ├── distro_1_normed_hist_50_bins.pdf
+│   │   │   ├── distro_2.pdf
+│   │   │   ├── distro_2_hist_50_bins.pdf
+│   │   │   └── distro_2_normed_hist_50_bins.pdf
+│   │   ├── read_csv.py
+│   │   ├── read_myst_1.py
+│   │   ├── read_myst_2.py
+│   │   ├── uniform_continuous.py
+│   │   └── uniform_discrete.py
+│   ├── example_notebook.ipynb
+│   ├── ford_fulkerson
+│   │   ├── __pycache__
+│   │   │   ├── ford_functions.cpython-36.pyc
+│   │   │   ├── ford_functions.cpython-39.pyc
+│   │   │   ├── plot_graphs.cpython-39.pyc
+│   │   │   └── visualize_initial_graph.cpython-36.pyc
+│   │   ├── apply_ford_fulkerson.py
+│   │   ├── data
+│   │   │   ├── network_10_nodes_edges_10_capmax_2_dot
+│   │   │   ├── network_10_nodes_edges_10_capmax_2_inner_capacities
+│   │   │   ├── network_10_nodes_edges_10_capmax_2_nodes
+│   │   │   ├── network_10_nodes_edges_10_capmax_2_sink_capacities
+│   │   │   ├── network_10_nodes_edges_10_capmax_2_source_capacities
+│   │   │   ├── network_15_nodes_edges_15_capmax_2_G
+│   │   │   ├── network_15_nodes_edges_15_capmax_2_dot
+│   │   │   ├── network_15_nodes_edges_15_capmax_2_inner_capacities
+│   │   │   ├── network_15_nodes_edges_15_capmax_2_nodes
+│   │   │   ├── network_15_nodes_edges_15_capmax_2_pos
+│   │   │   ├── network_15_nodes_edges_15_capmax_2_sink_capacities
+│   │   │   ├── network_15_nodes_edges_15_capmax_2_source_capacities
+│   │   │   ├── network_15_nodes_edges_15_capmax_3_G
+│   │   │   ├── network_15_nodes_edges_15_capmax_3_inner_capacities
+│   │   │   ├── network_15_nodes_edges_15_capmax_3_nodes
+│   │   │   ├── network_15_nodes_edges_15_capmax_3_pos
+│   │   │   ├── network_15_nodes_edges_15_capmax_3_sink_capacities
+│   │   │   ├── network_15_nodes_edges_15_capmax_3_source_capacities
+│   │   │   ├── network_20_nodes_edges_20_capmax_4_G
+│   │   │   ├── network_20_nodes_edges_20_capmax_4_inner_capacities
+│   │   │   ├── network_20_nodes_edges_20_capmax_4_nodes
+│   │   │   ├── network_20_nodes_edges_20_capmax_4_pos
+│   │   │   ├── network_20_nodes_edges_20_capmax_4_sink_capacities
+│   │   │   ├── network_20_nodes_edges_20_capmax_4_source_capacities
+│   │   │   ├── network_25_nodes_edges_25_capmax_2_G
+│   │   │   ├── network_25_nodes_edges_25_capmax_2_inner_capacities
+│   │   │   ├── network_25_nodes_edges_25_capmax_2_nodes
+│   │   │   ├── network_25_nodes_edges_25_capmax_2_pos
+│   │   │   ├── network_25_nodes_edges_25_capmax_2_sink_capacities
+│   │   │   ├── network_25_nodes_edges_25_capmax_2_source_capacities
+│   │   │   ├── network_5_nodes_edges_5_capmax_2_G
+│   │   │   ├── network_5_nodes_edges_5_capmax_2_dot
+│   │   │   ├── network_5_nodes_edges_5_capmax_2_inner_capacities
+│   │   │   ├── network_5_nodes_edges_5_capmax_2_nodes
+│   │   │   ├── network_5_nodes_edges_5_capmax_2_pos
+│   │   │   ├── network_5_nodes_edges_5_capmax_2_sink_capacities
+│   │   │   ├── network_5_nodes_edges_5_capmax_2_source_capacities
+│   │   │   ├── network_6_nodes_edges_6_capmax_2_G
+│   │   │   ├── network_6_nodes_edges_6_capmax_2_inner_capacities
+│   │   │   ├── network_6_nodes_edges_6_capmax_2_nodes
+│   │   │   ├── network_6_nodes_edges_6_capmax_2_pos
+│   │   │   ├── network_6_nodes_edges_6_capmax_2_sink_capacities
+│   │   │   ├── network_6_nodes_edges_6_capmax_2_source_capacities
+│   │   │   ├── network_6_nodes_edges_6_capmax_4_G
+│   │   │   ├── network_6_nodes_edges_6_capmax_4_inner_capacities
+│   │   │   ├── network_6_nodes_edges_6_capmax_4_nodes
+│   │   │   ├── network_6_nodes_edges_6_capmax_4_pos
+│   │   │   ├── network_6_nodes_edges_6_capmax_4_sink_capacities
+│   │   │   └── network_6_nodes_edges_6_capmax_4_source_capacities
+│   │   ├── ford_functions.py
+│   │   ├── generate_flow_network.py
+│   │   ├── images
+│   │   │   ├── network_15_nodes_edges_15_capmax_3
+│   │   │   │   ├── initial_graph_nx.pdf
+│   │   │   │   ├── step_10__residual.pdf
+│   │   │   │   ├── step_10_augmenting.pdf
+│   │   │   │   ├── step_11__residual.pdf
+│   │   │   │   ├── step_11_augmenting.pdf
+│   │   │   │   ├── step_12__residual.pdf
+│   │   │   │   ├── step_12_augmenting.pdf
+│   │   │   │   ├── step_13__residual.pdf
+│   │   │   │   ├── step_1__residual.pdf
+│   │   │   │   ├── step_1_augmenting.pdf
+│   │   │   │   ├── step_2__residual.pdf
+│   │   │   │   ├── step_2_augmenting.pdf
+│   │   │   │   ├── step_3__residual.pdf
+│   │   │   │   ├── step_3_augmenting.pdf
+│   │   │   │   ├── step_4__residual.pdf
+│   │   │   │   ├── step_4_augmenting.pdf
+│   │   │   │   ├── step_5__residual.pdf
+│   │   │   │   ├── step_5_augmenting.pdf
+│   │   │   │   ├── step_6__residual.pdf
+│   │   │   │   ├── step_6_augmenting.pdf
+│   │   │   │   ├── step_7__residual.pdf
+│   │   │   │   ├── step_7_augmenting.pdf
+│   │   │   │   ├── step_8__residual.pdf
+│   │   │   │   ├── step_8_augmenting.pdf
+│   │   │   │   ├── step_9__residual.pdf
+│   │   │   │   └── step_9_augmenting.pdf
+│   │   │   ├── network_20_nodes_edges_20_capmax_4
+│   │   │   │   ├── initial_graph_nx.pdf
+│   │   │   │   ├── step_10__residual.pdf
+│   │   │   │   ├── step_10_augmenting.pdf
+│   │   │   │   ├── step_11__residual.pdf
+│   │   │   │   ├── step_11_augmenting.pdf
+│   │   │   │   ├── step_12__residual.pdf
+│   │   │   │   ├── step_12_augmenting.pdf
+│   │   │   │   ├── step_13__residual.pdf
+│   │   │   │   ├── step_13_augmenting.pdf
+│   │   │   │   ├── step_14__residual.pdf
+│   │   │   │   ├── step_14_augmenting.pdf
+│   │   │   │   ├── step_15__residual.pdf
+│   │   │   │   ├── step_15_augmenting.pdf
+│   │   │   │   ├── step_16__residual.pdf
+│   │   │   │   ├── step_16_augmenting.pdf
+│   │   │   │   ├── step_17__residual.pdf
+│   │   │   │   ├── step_17_augmenting.pdf
+│   │   │   │   ├── step_18__residual.pdf
+│   │   │   │   ├── step_18_augmenting.pdf
+│   │   │   │   ├── step_19__residual.pdf
+│   │   │   │   ├── step_1__residual.pdf
+│   │   │   │   ├── step_1_augmenting.pdf
+│   │   │   │   ├── step_2__residual.pdf
+│   │   │   │   ├── step_2_augmenting.pdf
+│   │   │   │   ├── step_3__residual.pdf
+│   │   │   │   ├── step_3_augmenting.pdf
+│   │   │   │   ├── step_4__residual.pdf
+│   │   │   │   ├── step_4_augmenting.pdf
+│   │   │   │   ├── step_5__residual.pdf
+│   │   │   │   ├── step_5_augmenting.pdf
+│   │   │   │   ├── step_6__residual.pdf
+│   │   │   │   ├── step_6_augmenting.pdf
+│   │   │   │   ├── step_7__residual.pdf
+│   │   │   │   ├── step_7_augmenting.pdf
+│   │   │   │   ├── step_8__residual.pdf
+│   │   │   │   ├── step_8_augmenting.pdf
+│   │   │   │   ├── step_9__residual.pdf
+│   │   │   │   └── step_9_augmenting.pdf
+│   │   │   ├── network_5_nodes_edges_5_capmax_2
+│   │   │   │   ├── initial_graph_nx.pdf
+│   │   │   │   ├── step_1__residual.pdf
+│   │   │   │   ├── step_1_augmenting.pdf
+│   │   │   │   ├── step_2__residual.pdf
+│   │   │   │   ├── step_2_augmenting.pdf
+│   │   │   │   └── step_3__residual.pdf
+│   │   │   └── network_6_nodes_edges_6_capmax_4
+│   │   │       ├── initial_graph_nx.pdf
+│   │   │       ├── step_1__residual.pdf
+│   │   │       ├── step_1_augmenting.pdf
+│   │   │       ├── step_2__residual.pdf
+│   │   │       ├── step_2_augmenting.pdf
+│   │   │       ├── step_3__residual.pdf
+│   │   │       ├── step_3_augmenting.pdf
+│   │   │       ├── step_4__residual.pdf
+│   │   │       ├── step_4_augmenting.pdf
+│   │   │       └── step_5__residual.pdf
+│   │   └── plot_graphs.py
+│   ├── ford_matching
+│   │   ├── __pycache__
+│   │   │   ├── ford_functions.cpython-36.pyc
+│   │   │   ├── ford_functions.cpython-39.pyc
+│   │   │   └── plot_graphs.cpython-39.pyc
+│   │   ├── apply_ford_fulkerson.py
+│   │   ├── data
+│   │   │   ├── network_10_10_nodes_edges_15_G
+│   │   │   ├── network_10_10_nodes_edges_15_dot
+│   │   │   ├── network_10_10_nodes_edges_15_inner_capacities
+│   │   │   ├── network_10_10_nodes_edges_15_nodes_1
+│   │   │   ├── network_10_10_nodes_edges_15_nodes_2
+│   │   │   ├── network_10_10_nodes_edges_15_pos
+│   │   │   ├── network_10_10_nodes_edges_15_sink_capacities
+│   │   │   ├── network_10_10_nodes_edges_15_source_capacities
+│   │   │   ├── network_15_15_nodes_edges_20_G
+│   │   │   ├── network_15_15_nodes_edges_20_inner_capacities
+│   │   │   ├── network_15_15_nodes_edges_20_nodes_1
+│   │   │   ├── network_15_15_nodes_edges_20_nodes_2
+│   │   │   ├── network_15_15_nodes_edges_20_pos
+│   │   │   ├── network_15_15_nodes_edges_20_sink_capacities
+│   │   │   ├── network_15_15_nodes_edges_20_source_capacities
+│   │   │   ├── network_15_15_nodes_edges_30_G
+│   │   │   ├── network_15_15_nodes_edges_30_inner_capacities
+│   │   │   ├── network_15_15_nodes_edges_30_nodes_1
+│   │   │   ├── network_15_15_nodes_edges_30_nodes_2
+│   │   │   ├── network_15_15_nodes_edges_30_pos
+│   │   │   ├── network_15_15_nodes_edges_30_sink_capacities
+│   │   │   ├── network_15_15_nodes_edges_30_source_capacities
+│   │   │   ├── network_5_5_nodes_edges_10_G
+│   │   │   ├── network_5_5_nodes_edges_10_dot
+│   │   │   ├── network_5_5_nodes_edges_10_inner_capacities
+│   │   │   ├── network_5_5_nodes_edges_10_nodes_1
+│   │   │   ├── network_5_5_nodes_edges_10_nodes_2
+│   │   │   ├── network_5_5_nodes_edges_10_pos
+│   │   │   ├── network_5_5_nodes_edges_10_sink_capacities
+│   │   │   └── network_5_5_nodes_edges_10_source_capacities
+│   │   ├── ford_functions.py
+│   │   ├── generate_matching_problem.py
+│   │   ├── images
+│   │   │   └── network_15_15_nodes_edges_30
+│   │   │       ├── initial_graph_nx.pdf
+│   │   │       ├── step_10__residual.pdf
+│   │   │       ├── step_10_augmenting.pdf
+│   │   │       ├── step_11__residual.pdf
+│   │   │       ├── step_11_augmenting.pdf
+│   │   │       ├── step_12__residual.pdf
+│   │   │       ├── step_12_augmenting.pdf
+│   │   │       ├── step_13__residual.pdf
+│   │   │       ├── step_1__residual.pdf
+│   │   │       ├── step_1_augmenting.pdf
+│   │   │       ├── step_2__residual.pdf
+│   │   │       ├── step_2_augmenting.pdf
+│   │   │       ├── step_3__residual.pdf
+│   │   │       ├── step_3_augmenting.pdf
+│   │   │       ├── step_4__residual.pdf
+│   │   │       ├── step_4_augmenting.pdf
+│   │   │       ├── step_5__residual.pdf
+│   │   │       ├── step_5_augmenting.pdf
+│   │   │       ├── step_6__residual.pdf
+│   │   │       ├── step_6_augmenting.pdf
+│   │   │       ├── step_7__residual.pdf
+│   │   │       ├── step_7_augmenting.pdf
+│   │   │       ├── step_8__residual.pdf
+│   │   │       ├── step_8_augmenting.pdf
+│   │   │       ├── step_9__residual.pdf
+│   │   │       └── step_9_augmenting.pdf
+│   │   └── plot_graphs.py
+│   ├── gradient
+│   │   ├── function_1
+│   │   │   ├── 0.pdf
+│   │   │   ├── 10.pdf
+│   │   │   ├── 15.pdf
+│   │   │   ├── 20.pdf
+│   │   │   ├── 25.pdf
+│   │   │   ├── 30.pdf
+│   │   │   ├── 35.pdf
+│   │   │   ├── 40.pdf
+│   │   │   ├── 45.pdf
+│   │   │   ├── 5.pdf
+│   │   │   ├── 50.pdf
+│   │   │   ├── 55.pdf
+│   │   │   ├── 60.pdf
+│   │   │   ├── 65.pdf
+│   │   │   ├── 70.pdf
+│   │   │   ├── 75.pdf
+│   │   │   ├── 80.pdf
+│   │   │   ├── 85.pdf
+│   │   │   ├── 90.pdf
+│   │   │   ├── 95.pdf
+│   │   │   └── myimage.gif
+│   │   ├── function_2
+│   │   │   ├── 0.pdf
+│   │   │   ├── 1000.pdf
+│   │   │   ├── 1500.pdf
+│   │   │   ├── 2000.pdf
+│   │   │   ├── 2500.pdf
+│   │   │   ├── 3000.pdf
+│   │   │   ├── 3500.pdf
+│   │   │   ├── 4000.pdf
+│   │   │   ├── 4500.pdf
+│   │   │   └── 500.pdf
+│   │   ├── function_to_minimize.pdf
+│   │   ├── function_to_minimize_2.pdf
+│   │   ├── gifs
+│   │   │   ├── minimum_1.gif
+│   │   │   ├── minimum_2.gif
+│   │   │   └── minimum_3.gif
+│   │   ├── gradient_algo.py
+│   │   ├── gradient_algo_1.ipynb
+│   │   ├── gradient_algo_2.ipynb
+│   │   └── gradient_algo_2.py
+│   ├── kmeans
+│   │   ├── algorithm
+│   │   │   ├── it_0_assign_voronoi.pdf
+│   │   │   ├── it_0_move_centroids.pdf
+│   │   │   ├── it_1_assign_voronoi.pdf
+│   │   │   ├── it_1_move_centroids.pdf
+│   │   │   ├── it_2_assign_voronoi.pdf
+│   │   │   ├── it_2_move_centroids.pdf
+│   │   │   ├── it_3_assign_voronoi.pdf
+│   │   │   ├── it_3_move_centroids.pdf
+│   │   │   ├── it_4_assign_voronoi.pdf
+│   │   │   ├── it_4_move_centroids.pdf
+│   │   │   ├── it_5_assign_voronoi.pdf
+│   │   │   ├── it_5_move_centroids.pdf
+│   │   │   ├── it_6_assign_voronoi.pdf
+│   │   │   ├── it_6_move_centroids.pdf
+│   │   │   ├── it_7_assign_voronoi.pdf
+│   │   │   └── it_7_move_centroids.pdf
+│   │   ├── data.npy
+│   │   ├── data.pdf
+│   │   ├── generate_data.py
+│   │   ├── k_means.py
+│   │   ├── kmeans_sklearn.py
+│   │   └── sklearn_centroids.pdf
+│   ├── matching_greedy
+│   │   ├── __pycache__
+│   │   │   ├── matching_functions.cpython-36.pyc
+│   │   │   └── matching_functions.cpython-39.pyc
+│   │   ├── apply_matching_algorithm.py
+│   │   ├── data
+│   │   │   ├── n=20_maxs=3_edges
+│   │   │   ├── n=20_maxs=3_neighbors
+│   │   │   ├── n=20_maxs=3_nodes
+│   │   │   ├── n=40_maxs=4_edges
+│   │   │   └── n=40_maxs=4_neighbors
+│   │   ├── generate_graph.py
+│   │   ├── images
+│   │   │   └── n=20_maxs=3
+│   │   │       ├── initial_graph.pdf
+│   │   │       ├── match_greedy_1.pdf
+│   │   │       ├── match_greedy_11.pdf
+│   │   │       ├── match_greedy_15.pdf
+│   │   │       ├── match_greedy_2.pdf
+│   │   │       ├── match_greedy_20.pdf
+│   │   │       ├── match_greedy_4.pdf
+│   │   │       ├── match_greedy_6.pdf
+│   │   │       └── match_greedy_8.pdf
+│   │   └── matching_functions.py
+│   ├── multivariate_analysis
+│   │   ├── causality
+│   │   │   ├── create_people.py
+│   │   │   ├── csv_files
+│   │   │   │   └── grades.csv
+│   │   │   ├── images
+│   │   │   │   ├── Height_vs_Age.pdf
+│   │   │   │   └── grade_vs_height.pdf
+│   │   │   └── process_grades.py
+│   │   ├── different_scatter_plot.pdf
+│   │   ├── different_scatter_plot.py
+│   │   ├── iris
+│   │   │   ├── iris_scatter_matrix.pdf
+│   │   │   └── iris_scatter_matrix.py
+│   │   ├── iris_scatter_matrix.py
+│   │   ├── random_scatter_matrix.pdf
+│   │   ├── random_variable_scatter_matrix.py
+│   │   ├── simple_scatter_plot.pdf
+│   │   ├── simple_scatter_plot.py
+│   │   └── titanic
+│   │       ├── images
+│   │       │   ├── Class_vs_survived.pdf
+│   │       │   ├── Scatter_PassengerId_vs_Fare_vs_Survived.pdf
+│   │       │   ├── Scatter_Pclass_vs_Age_vs_Survived.pdf
+│   │       │   └── Sex_vs_survived.pdf
+│   │       ├── input
+│   │       │   ├── gender_submission.csv
+│   │       │   ├── test.csv
+│   │       │   └── titanic.csv
+│   │       ├── pandas_infos.py
+│   │       ├── readme.txt
+│   │       ├── scatter_titanic.py
+│   │       ├── scatter_titanic_color.py
+│   │       └── titanic_scatter_matrix.py
+│   ├── numpy_demo
+│   │   ├── numpy_demo.ipynb
+│   │   └── numpy_demo.py
+│   ├── other_graphs
+│   │   ├── Random_undirected_graph.ipynb
+│   │   ├── bipartite_graph.py
+│   │   ├── highlight_subset.py
+│   │   ├── images
+│   │   │   ├── bipartite_graph
+│   │   │   ├── bipartite_graph.pdf
+│   │   │   ├── random_directed_10_vx_30_edgs.pdf
+│   │   │   ├── random_directed_30_vx_100_edgs.pdf
+│   │   │   ├── random_directed_60_vx_200_edgs.pdf
+│   │   │   ├── random_undirected_10_vx_40_edgs.pdf
+│   │   │   ├── random_undirected_20_vx_50_edgs.pdf
+│   │   │   ├── random_undirected_20_vx_60_edgs.pdf
+│   │   │   ├── random_undirected_60_vx_200_edgs.pdf
+│   │   │   └── random_undirected_60_vx_300_edgs.pdf
+│   │   ├── random_directed_graph.py
+│   │   ├── random_undirected_graph.py
+│   │   └── with_graphviz
+│   │       ├── images
+│   │       │   ├── directed_rand_18_vx_30_edgs.pdf
+│   │       │   ├── rand_100_vx_300_edgs.pdf
+│   │       │   ├── rand_10_vx_25_edgs.pdf
+│   │       │   └── rand_60_vx_300_edgs.pdf
+│   │       ├── random_graph.py
+│   │       └── random_graph_minimalist.py
+│   └── spectral_clustering
+│       ├── data
+│       │   ├── adjacency_matrix.npy
+│       │   ├── distances.npy
+│       │   └── similarity.npy
+│       ├── generate_data.py
+│       ├── generate_graph.py
+│       ├── images
+│       │   ├── adjacency_matrix.pdf
+│       │   ├── data_to_cluster.pdf
+│       │   ├── graph_to_cluster
+│       │   ├── graph_to_cluster.pdf
+│       │   ├── normalized_cuts.pdf
+│       │   ├── normalized_cuts_large_std.pdf
+│       │   └── similarity.pdf
+│       ├── normalized_cut.py
+│       └── vanilla_spectral_clustering.py
+├── course
+│   ├── exercices\ maths.pdf
+│   ├── formules.pdf
+│   ├── presentation_1.pdf
+│   ├── presentation_2.pdf
+│   ├── project\ description.pdf
+│   ├── proof\ ford\ fulkerson.pdf
+│   └── repere.pdf
+├── course_outline.txt
+├── file_tree.txt
+├── launchNotebookServer.sh
+└── requirements.txt
+
+54 directories, 438 files
