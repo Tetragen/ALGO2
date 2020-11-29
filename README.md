@@ -1,6 +1,6 @@
 # Introduction to algorithms course
 This repository contains slides and exercices for 5th year students at epitech for the course
-"introduction to algorithms".
+"Algo2 : graph algorithms and matching".
 
 Scripts contains errors on the default "exercise" branch. These exercises are
 material for students to work locally after cloning the repository.

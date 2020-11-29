@@ -3,6 +3,7 @@
 *.swo
  __pycache__/
  *.pyc
+ *__pycache__/*
 code/.cache/*
 code/.config/*
 code/.ipython/*
