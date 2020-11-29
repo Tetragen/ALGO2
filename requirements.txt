@@ -1,0 +1,9 @@
+numpy
+matplotlib
+networkx
+scipy
+pandas
+sklearn
+graphviz
+seaborn
+ipdb

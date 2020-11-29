@@ -18,14 +18,12 @@ dataset = [x for x in range(nb_datapoints)]
 
 
 def cluster_and_compute_normalized_cut(nb_clusters, adjacency_matrix):
+    # setup spectral clustering
     sc = SpectralClustering(nb_clusters, affinity='precomputed')
-    # n_init=100)
-    # assign_labels='discretize')
-
     # apply the Spectral Clustering to the adjacency matrix
     sc.fit_predict(adjacency_matrix)
 
-    clusters = []
+    clusters = list()
     for cluter_index in range(nb_clusters):
         cluster = np.where(sc.labels_ == cluter_index)[0]
         clusters.append(cluster)
@@ -35,18 +33,13 @@ def cluster_and_compute_normalized_cut(nb_clusters, adjacency_matrix):
     for cluster in clusters:
         # points that are not in this cluster
         complementary = [x for x in dataset if x not in cluster]
-        # print("--")
-        # print(cluster)
-        # print(complementary)
 
         # compute the cut of the cluster
         # connections with points outside itsself
         cluster_cut = 0
         for point in cluster:
-            point_outside_connections = sum(
-                adjacency_matrix[point, complementary])
+            point_outside_connections = sum(adjacency_matrix[point, complementary])
             cluster_cut += point_outside_connections
-        # print(cluster_cut)
 
         # compute the degree of the cluster
         # it is the sum of the degree of all its nodes
@@ -54,7 +47,6 @@ def cluster_and_compute_normalized_cut(nb_clusters, adjacency_matrix):
         for point in cluster:
             point_degree = sum(adjacency_matrix[point, :])
             cluster_degree += point_degree
-        # print(cluster_degree)
 
         # compute the normalized cut
         cluster_normalized_cut = cluster_cut/cluster_degree
@@ -64,7 +56,7 @@ def cluster_and_compute_normalized_cut(nb_clusters, adjacency_matrix):
     return normalized_cut
 
 
-normalized_cuts = []
+normalized_cuts = list()
 max_nb_clusters = 10
 tried_nb_clusters = range(1, max_nb_clusters)
 

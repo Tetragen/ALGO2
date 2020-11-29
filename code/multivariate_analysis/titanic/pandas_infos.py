@@ -35,8 +35,3 @@ print(df.loc[passenger_id]['Survived'])
 print(df.loc[passenger_id]['Embarked'])
 print(df.loc[passenger_id]['Cabin'])
 print(df.loc[passenger_id]['Pclass'])
-
-__import__('ipdb').set_trace()
-
-
-# ipdb.set_trace()

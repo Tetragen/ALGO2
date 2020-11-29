@@ -1,4 +1,3 @@
-import ipdb
 import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set(style="ticks")
@@ -12,6 +11,6 @@ sns.pairplot(df, hue="species")
 
 
 title = 'Scatter matrix of the iris dataset'
-file = 'iris_scatter_matrix.pdf'
+file_name = 'iris_scatter_matrix.pdf'
 plt.title(title)
-plt.savefig(file)
+plt.savefig(file_name)

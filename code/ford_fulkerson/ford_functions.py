@@ -3,6 +3,7 @@ import numpy as np
 import os
 import networkx as nx
 import matplotlib.pyplot as plt
+from plot_graphs import build_residual_graph, show_residual_network_nx, highlight_path
 
 
 def apply_ford_fulkerson(
@@ -36,8 +37,8 @@ def apply_ford_fulkerson(
         --------
         b) Look for augmenting paths in the residual graph.
         - The function find_augmenting_paths() looks for augmenting paths
-        by performing a BFS search in the graph.
-        We could do better.
+        by performing a search in the graph.
+        This could be optimized.
         - The function highlight_path() plots the chosen
         augmenting path.
 
@@ -73,9 +74,8 @@ def apply_ford_fulkerson(
 
         # compute the residual capacities
         residual_capacities = capacities-flow
-        # print(flow)
 
-        # show the residual network
+        # build and show the residual network
         # it might have more edges since we changed the capacities
         G_residual = build_residual_graph(G,
                                           nodes,
@@ -84,7 +84,7 @@ def apply_ford_fulkerson(
         show_residual_network_nx(G_residual, pos, residual_capacities,
                                  capacities, nodes, dir_name, step)
 
-        # first look for possible augmenting paths
+        # look for augmenting paths
         augmenting_paths = find_augmenting_paths(residual_capacities)
         if augmenting_paths:
             print("found augmenting paths in residual graph")
@@ -98,10 +98,9 @@ def apply_ford_fulkerson(
                                 step,
                                 nodes)
             residual_capacities = capacities-flow
-            # print("new flow")
-            # print(flow)
 
-            # check if the flow matrix is really a flow
+            # verify if the flow matrix respects
+            # the definition of a flow
             check_flow(flow, nodes, capacities)
 
             # compute the value of the flow
@@ -118,60 +117,6 @@ def apply_ford_fulkerson(
             print(f"flow value: {flow_value}")
             print("\n=====================\n")
             break
-
-
-def show_residual_network_nx(G_residual, pos, residual_capacities, capacities, nodes, dir_name, step):
-    edges_width = list()
-    edges_colors = list()
-    edge_labels = dict()
-
-    for edge in G_residual.edges:
-        reverse = False
-        if edge[0] == "Source":
-            node = int(edge[1].split('-')[1])
-            residual_capacity = residual_capacities[0, node+1]
-        elif edge[0] == "Sink":
-            reverse = True
-            node = int(edge[1].split('-')[1])
-            residual_capacity = residual_capacities[-1, node+1]
-        elif edge[1] == "Sink":
-            node = int(edge[0].split('-')[1])
-            residual_capacity = residual_capacities[node+1, -1]
-        elif edge[1] == "Source":
-            reverse = True
-            node = int(edge[0].split('-')[1])
-            residual_capacity = residual_capacities[node+1, 0]
-        else:
-            node_1 = int(edge[0].split('-')[1])
-            node_2 = int(edge[1].split('-')[1])
-            residual_capacity = residual_capacities[node_1 + 1, node_2 + 1]
-        if residual_capacity != 0:
-            if reverse:
-                edges_width.append(1)
-                edges_colors.append("#67d627")
-            else:
-                edges_width.append(1)
-                edges_colors.append("#f5b342")
-        else:
-            edges_width.append(0.01)
-            edges_colors.append("#1b50a1")
-
-        edge_labels[edge] = residual_capacity
-
-    node_color = "#b6cef2"
-    plt.title(f"residual graph step {step}")
-    nx.draw(G_residual,
-            pos,
-            node_size=160,
-            node_color=node_color,
-            font_size=6,
-            edge_color=edges_colors,
-            width=edges_width,
-            with_labels=True)
-    nx.draw_networkx_edge_labels(
-        G_residual, pos, edge_labels=edge_labels, font_size=6)
-    plt.savefig(dir_name+f"/step_{step}__residual.pdf")
-    plt.close()
 
 
 def check_flow(flow, nodes, capacities):
@@ -193,24 +138,21 @@ def check_flow(flow, nodes, capacities):
     antisymmetry_check = np.transpose(inner_flow) == -inner_flow
     flow_check_1 = antisymmetry_check.all()
     if flow_check_1:
-        print("First check ok : flow matrix is symmetric.")
+        print("First check ok : flow matrix is antisymmetric.")
     else:
         print("Flow not ok ! Not symmetrical.")
 
     # -------------
     # Second check
     # -------------
-    # test that what goes out of a node
-    # is the same as what comes in,
-    # for any node different from the sink
-    # and the difference from the source.
+    # flow conservation
     flow_check_2 = list()
     for node in range(1, len(nodes) + 1):
-        flow_check_2.append(sum(flow[:, node]) == sum(flow[node, :]))
+        flow_check_2.append(sum(flow[:, node]) == 0)
     if all(flow_check_2):
-        print("Second check ok : output of nodes are the same as inputs.")
+        print("Second check ok : flow is conserved.")
     else:
-        print("Flow not ok ! One node outputs a quantity not equal to its input.")
+        print("Flow not ok ! flow not conserved.")
 
     # -------------
     # Third check
@@ -224,16 +166,6 @@ def check_flow(flow, nodes, capacities):
     else:
         print("Flow not ok ! The flow on one edge exceeds its capacity.")
 
-#    # -------------
-#    # Fourth check
-#    # -------------
-#    # the flow must be positive
-#    comparison_4 = flow >= 0
-#    flow_check_4 = comparison_4.all()
-#    if flow_check_4:
-#        print("Fourth check ok : flow is positive.")
-#    else:
-#        print("Flow not ok ! The flow is not positive.")
     print("---\n")
 
 
@@ -246,19 +178,15 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
     # -----------
     # first choose an augmenting path randomly
     # from the ones we found.
-    # or take the last one ? up to you
+    # you can also choose the last one, for instance
     augmenting_path = augmenting_paths.pop()
     print(f"chosen augmenting path : {augmenting_path}")
 
     # compute the capacity of this path.
-    # We take the capacities from the source to the sink
-    # without the sink.
     augmenting_path_capacities = list()
     for node_index in range(len(augmenting_path)-1):
         node_1 = augmenting_path[node_index]
         node_2 = augmenting_path[node_index+1]
-        # print(node_1)
-        # print(node_2)
         augmenting_path_capacities.append(residual_capacities[node_1][node_2])
     # The capacit of a path is the minimum of the capacities
     # of each edge.
@@ -269,7 +197,6 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
     highlight_path(G_residual, pos, augmenting_path,
                    dir_name, step, nodes, path_capacity)
 
-    # -----
     # finally augment the flow
     nb_nodes = len(nodes)+2
     added_flow_value = path_capacity
@@ -284,8 +211,7 @@ def augment_flow(flow, residual_capacities, augmenting_paths, dir_name,
 
 def find_augmenting_paths(residual_capacities):
     """
-        Look for an augmenting path in the residual graph by
-        breadth-first search (BFS)
+        Look for an augmenting path in the residual graph
     """
     # we want to go from the source to the sink
     # using edges in the residual graph
@@ -298,7 +224,7 @@ def find_augmenting_paths(residual_capacities):
     stack = [(0, [0])]
     while stack:
         (vertex, path) = stack.pop()
-        # careful, we put all the capacities in a single matrix
+        # be careful, we put all the capacities in a single matrix
         # thus :
         # source is on rank 0
         # node 0 is on rank 1
@@ -311,106 +237,9 @@ def find_augmenting_paths(residual_capacities):
             # print(f"next node {next_node}")
             if next_node == last_index:
                 # print("found augmenting path : {path+[next_node]}")
-                # avoid loops !
-                if next_node not in path:
-                    augmenting_paths.append(path+[next_node])
+                augmenting_paths.append(path+[next_node])
             else:
                 # avoid loops !
                 if next_node not in path:
                     stack.append((next_node, path+[next_node]))
     return augmenting_paths
-
-
-def highlight_path(G_residual, pos, augmenting_path, dir_name, step, nodes, path_capacity):
-    print(f"highlight path {augmenting_path}")
-
-    # reformat augmenting path
-    augmenting_path_edges = list()
-    for index in range(len(augmenting_path)-1):
-        augmenting_path_edges.append(
-            [augmenting_path[index], augmenting_path[index+1]])
-
-    # print(augmenting_path_edges)
-    edges_width = list()
-    edges_colors = list()
-    edge_labels = dict()
-    for edge in G_residual.edges:
-        if edge[0] == "Source":
-            node = int(edge[1].split('-')[1])
-            parsed_edge = [0, node+1]
-        elif edge[0] == "Sink":
-            node = int(edge[1].split('-')[1])
-            parsed_edge = [len(nodes)+1, node+1]
-        elif edge[1] == "Sink":
-            node = int(edge[0].split('-')[1])
-            parsed_edge = [node+1, len(nodes)+1]
-        elif edge[1] == "Source":
-            node = int(edge[0].split('-')[1])
-            parsed_edge = [node, 0]
-        else:
-            node_1 = int(edge[0].split('-')[1])
-            node_2 = int(edge[1].split('-')[1])
-            parsed_edge = [node_1+1, node_2+1]
-        if parsed_edge in augmenting_path_edges:
-            edges_width.append(1)
-            edges_colors.append("#d627c2")
-            edge_labels[edge] = path_capacity
-            # print(parsed_edge)
-        else:
-            edges_width.append(0.01)
-            edges_colors.append("#1b50a1")
-
-    node_color = "#b6cef2"
-    plt.title(f"augmenting path step {step}")
-    nx.draw(G_residual,
-            pos,
-            node_size=160,
-            node_color=node_color,
-            font_size=6,
-            edge_color=edges_colors,
-            width=edges_width,
-            with_labels=True)
-    nx.draw_networkx_edge_labels(G_residual,
-                                 pos,
-                                 edge_labels=edge_labels,
-                                 font_size=6)
-    plt.savefig(dir_name+f"/step_{step}_augmenting.pdf")
-    plt.close()
-
-
-def build_residual_graph(G,
-                         nodes,
-                         residual_capacities,
-                         capacities):
-    G_residual = G.copy()
-    for node_1 in range(len(nodes)+2):
-        for node_2 in range(len(nodes)+2):
-            if not node_1 == node_2:
-                residual_capacity = residual_capacities[node_1, node_2]
-                initial_capacity = capacities[node_1, node_2]
-                # set label
-                if node_1 == 0:
-                    label_1 = "Source"
-                    label_2 = f"i-{node_2-1}"
-                elif node_1 == len(nodes)+1:
-                    label_1 = "Sink"
-                    label_2 = f"i-{node_2-1}"
-                elif node_2 == 0:
-                    label_1 = f"i-{node_1-1}"
-                    label_2 = "Source"
-                elif node_2 == len(nodes)+1:
-                    label_1 = f"i-{node_1-1}"
-                    label_2 = "Sink"
-                else:
-                    label_1 = f"i-{node_1-1}"
-                    label_2 = f"i-{node_2-1}"
-
-                # process graph
-                edge = (label_1, label_2)
-                if residual_capacity == 0:
-                    if edge in G_residual.edges:
-                        G_residual.remove_edge(label_1, label_2)
-                if residual_capacity != 0:
-                    if initial_capacity == 0:
-                        G_residual.add_edge(label_1, label_2)
-    return G_residual

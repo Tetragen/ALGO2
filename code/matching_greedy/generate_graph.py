@@ -1,15 +1,16 @@
-import pickle
-import os
-import random
-import networkx as nx
-import matplotlib.pyplot as plt
-
 """
 Generate graph data to perform the max matching greedy
 algorithm. We generate:
     - a dictionary of neighbors
     - a list of edges
 """
+
+import pickle
+import os
+import random
+import networkx as nx
+import matplotlib.pyplot as plt
+
 if not os.path.exists("data/"):
     os.makedirs("data")
 
@@ -68,12 +69,11 @@ def generate_problem_instance(n_nodes: int, max_successors: int):
     # at this point, we have neighbors, rather than
     # successors
 
-    # print(successors)
-
     edges_list = []
     # build list of edges
     # the edges will just be used for plotting.
-    # so we will not keep noth edges [node_A, node_B] and
+    # so we will not keep both
+    # [node_A, node_B] and
     # [node_B, node_A]
     for node in range(1, n_nodes + 1):
         for successor_of_node in successors[node]:
@@ -86,7 +86,6 @@ def generate_problem_instance(n_nodes: int, max_successors: int):
 
     print("edges")
     print(edges_list)
-    # print(len(edges_list))
 
     G = nx.Graph()
     for edge in edges_list:

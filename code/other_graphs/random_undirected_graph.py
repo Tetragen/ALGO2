@@ -1,5 +1,5 @@
 """
-Generating a random undirected graph
+    Generating a random undirected graph
 """
 
 import numpy as np
@@ -18,7 +18,7 @@ def generate_random_undirected_graph(n: int, p: int):
         ----------------
         networkx
         matplotlib
-
+        numpy
     """
     G = nx.Graph()
 

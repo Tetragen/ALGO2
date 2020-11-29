@@ -1,11 +1,12 @@
-""" greedy algo to try to find a minimal dominant set
+"""
+    greedy algorithm to find a minimal dominant set
 """
 
 import pickle
-import matching_functions
 import os
 import networkx as nx
 import matplotlib.pyplot as plt
+import matching_functions
 
 
 def match_graph(nb_nodes: int, max_nb_of_successors: int):

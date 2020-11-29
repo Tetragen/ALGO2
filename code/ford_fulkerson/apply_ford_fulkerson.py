@@ -5,8 +5,6 @@ Load flow network and apply Ford Fulkerson
 import pickle
 import ford_functions
 import os
-import ipdb
-from graphviz import Graph
 
 
 def apply_algorithm(nb_nodes, nb_edges, capacity_max):
@@ -46,4 +44,4 @@ def apply_algorithm(nb_nodes, nb_edges, capacity_max):
     )
 
 
-apply_algorithm(5, 5, 2)
+apply_algorithm(20, 20, 4)

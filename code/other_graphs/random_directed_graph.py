@@ -18,7 +18,7 @@ def generate_random_directed_graph(n: int, p: int):
         ----------------
         networkx
         matplotlib
-
+        numpy
     """
     G = nx.DiGraph()
 

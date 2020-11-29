@@ -46,7 +46,6 @@ def show_matching(nodes,
 
     # we use sets because
     # G.edges can change the indexing in the edges
-    # __import__('ipdb').set_trace()
     for edge in G.edges:
         if set(edge) in matching:
             edge_colors.append(matched_edge_color)
@@ -54,7 +53,7 @@ def show_matching(nodes,
             edge_colors.append(unmatched_edge_color)
 
     # visualize the graph
-    graph_name = dir_name+"greedy_"+str(index)+".pdf"
+    graph_name = dir_name+"match_greedy_"+str(index)+".pdf"
     graph_title = f"\nMatching size: {matching_length}\nAlgo step: {index}\nNb nodes: {len(nodes)}"
 
     plt.title(graph_title, fontsize=9)
@@ -128,8 +127,6 @@ def match_graph(edges_list, nodes, dir_name):
             print(matched_nodes)
             print("matching")
             print(matching)
-            # print("matching length")
-            # print(len(matching))
             matching_length = len(matching)
             show_matching(nodes,
                           edges_list,
