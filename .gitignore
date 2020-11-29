@@ -4,6 +4,7 @@
  __pycache__/
  *.pyc
  *__pycache__/*
+code/*/__pycache__/
 code/.cache/*
 code/.config/*
 code/.ipython/*
