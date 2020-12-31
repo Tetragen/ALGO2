@@ -1,4 +1,4 @@
-# Introduction to algorithms course
+# Graph algorithms and matching.
 This repository contains slides and exercices for 5th year students at epitech for the course
 "Algo2 : graph algorithms and matching".
 
